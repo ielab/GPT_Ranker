@@ -7,4 +7,4 @@
 
 ## To Clone this repo
 
-git clone --submodule-recursive git@github.com:ielab/GPT_Ranker.git
+git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git

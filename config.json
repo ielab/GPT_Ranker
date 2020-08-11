@@ -1,0 +1,6 @@
+{
+  "INDEX": "data/index/lucene-index-msmarco",
+  "QRELS": "data/qrels/qrels.dev.small.tsv",
+  "QUERY": "data/query/docs00.json",
+  "RANK_FILE": "data/run.msmarco-passage.dev.small.tsv"
+}

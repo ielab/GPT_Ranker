@@ -1,5 +1,9 @@
 from pyserini.search import SimpleSearcher
 
+"""
+THIS FILE MAINLY CONTAINS ANSERINI RELATED FUNCTIONS
+"""
+
 
 class AnseriniRetriever:
 

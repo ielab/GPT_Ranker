@@ -1,5 +1,9 @@
 from transformers import *
 
+"""
+THIS FILE MAINLY HANDLES THE GPT-2 RELATED WORK
+"""
+
 
 class GPT2:
 

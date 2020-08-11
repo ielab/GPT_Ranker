@@ -26,8 +26,7 @@ def main():
             qid = document[0]
             docContents = getDocumentContent(CONF, docid)
             queryContents = QUERY[qid]
-            print(docContents)
-            print(queryContents)
+            getPredictionScore(docContents, queryContents)
 
 
 if __name__ == '__main__':

@@ -14,6 +14,10 @@ def getDocumentContent(CONF, docid):
     return content
 
 
-def getTokenizedQuery(query):
-    # Tokenize query
-    pass
+def getPredictionScore(document: str, query: str):
+    # Get the prediction score from the GPT-2 model
+    worker = GPT2()
+    queryTokens = query.split(" ")
+
+    prob = worker.prediction(document, queryTokens)
+    print(prob)

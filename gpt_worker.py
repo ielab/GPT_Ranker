@@ -1,3 +1,5 @@
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 from transformers import *
 import torch
 from scipy.special import softmax

@@ -56,8 +56,10 @@ def generateResFile(rankedCollection, CONF):
     resPath = CONF["RESULT"]
     for query in rankedCollection:
         rank = 1
+        lines = []
         for document in query:
             line = document[0] + "\t" + document[1] + "\t" + str(rank) + "\t" + str(document[3]) + "\n"
             rank += 1
-            with open(resPath + "gpt2_large_rerank.res", "a+") as f:
-                f.write(line)
+            lines.append(line)
+        with open(resPath + "gpt2_large_rerank.res", "a+") as f:
+            f.writelines(lines)

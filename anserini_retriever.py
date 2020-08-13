@@ -9,8 +9,7 @@ class AnseriniRetriever:
 
     def __init__(self, CONF):
         self.CONF = CONF
-        self.indexPath = CONF["INDEX"]
-        self.searcher = SimpleSearcher(self.indexPath)
+        self.searcher = SimpleSearcher(CONF["INDEX"])
 
     def getDoc(self, docid):
         hit = self.searcher.doc(docid)

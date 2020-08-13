@@ -3,5 +3,16 @@
   "QRELS": "data/qrels/qrels.dev.small.tsv",
   "QUERY": "data/query/docs00.json",
   "RANK_FILE": "data/run.msmarco-passage.dev.small.tsv",
-  "RESULT": "result/"
+  "RESULT": "result/",
+  "COLLECTION": [
+    "data/collection_jsonl/docs00.json",
+    "data/collection_jsonl/docs01.json",
+    "data/collection_jsonl/docs02.json",
+    "data/collection_jsonl/docs03.json",
+    "data/collection_jsonl/docs04.json",
+    "data/collection_jsonl/docs05.json",
+    "data/collection_jsonl/docs06.json",
+    "data/collection_jsonl/docs07.json",
+    "data/collection_jsonl/docs08.json"
+  ]
 }

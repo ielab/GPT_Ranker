@@ -1,7 +1,7 @@
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
-from transformers import *
 import torch
+from transformers import *
 from scipy.special import softmax
 
 """
@@ -15,22 +15,21 @@ class GPT2:
         self.tokenizer = AutoTokenizer.from_pretrained("gpt2-large")
         self.model = AutoModelWithLMHead.from_pretrained("gpt2-large")
 
-    def prediction(self, document, queryWords):
+    def prediction(self, document, queryWords, query):
         prob = []
-        # truth = "D: In-home tutors can earn anywhere from $10 to $80 an hour, depending on the type of lesson, the student\u00e2\u0080\u0099s skill and age level and the tutor\u00e2\u0080\u0099s experience. Tutors often charge more for older students or those who require more advanced lessons.\nQ: how much does an average person make for tutoring\n"
-        # document = truth + "D: " + document + "\nQ:"
-        for each in queryWords:
-            indexed_tokens = self.tokenizer.encode(document)
-            token_tensor = torch.tensor([indexed_tokens])
 
-            with torch.no_grad():
-                predictions = self.model(token_tensor)
-                results = predictions[0]
-                temp = results[0, -1, :]
-                temp = temp.numpy()
-                result = softmax(temp)
-                word = self.tokenizer.encode(each)[0]
-                prob.append(result[word])
-                document = document + " " + each
+        documentLength = len(document.split(" "))
+
+        indexed_tokens = self.tokenizer.encode(document+" "+query)
+        token_tensor = torch.tensor([indexed_tokens])
+
+        with torch.no_grad():
+            predictions = self.model(token_tensor)
+            results = predictions[0]
+            temp = results[0, documentLength - 1:-1, :]
+            result = softmax(temp.numpy(), axis=1)
+            words = self.tokenizer.encode(queryWords)
+            for index, val in enumerate(words):
+                prob.append(result[index][val])
 
         return prob

@@ -1,4 +1,5 @@
 import json
+from tqdm import tqdm
 
 """
 THIS FILE MAINLY PROVIDES HELPER FUNCTIONS TO OTHER FUNCTIONS
@@ -57,3 +58,38 @@ def readQueryFile(CONF):
         queryDict[query["id"]] = query["contents"]
 
     return queryDict
+
+
+def chunks(lst, n):
+    # Create smaller lists evenly from lst
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
+
+
+def readCollectionFile(CONF, RANKED_FILE_CONTENT):
+    dic = {}
+    for query in RANKED_FILE_CONTENT:
+        for document in query:
+            if document[1] not in dic:
+                dic[document[1]] = ""
+            else:
+                continue
+
+    collectionDict = getDocumentContent(CONF, dic)
+
+    return collectionDict
+
+
+def getDocumentContent(CONF, dic):
+    # Scan all 9 collection_jsonl files to find the corresponding contents
+    collectionPaths = CONF["COLLECTION"]
+    for path in tqdm(collectionPaths, desc='Loading Collection...'):
+        with open(path, "r") as f:
+            lines = f.readlines()
+        for line in lines:
+            jsonL = json.loads(line)
+            if jsonL["id"] in dic:
+                dic[jsonL["id"]] = jsonL["contents"]
+            else:
+                continue
+    return dic

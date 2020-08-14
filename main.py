@@ -26,7 +26,7 @@ if __name__ == '__main__':
     chunkRes = numpy.array_split(numpy.array(RANKED_FILE_CONTENT), totalProcess)
     processPool = []
     for index, val in enumerate(chunkRes):
-        p = Process(target=rerankDocuments, args=(chunkRes[index], COLLECTION_DICT, CONF, QUERY, 1000, WORKER, index + 1))
+        p = Process(target=rerankDocuments, args=(chunkRes[index], COLLECTION_DICT, CONF, QUERY, 100, WORKER, index + 1))
         p.start()
         processPool.append(p)
     for p in processPool:

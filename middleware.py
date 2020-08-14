@@ -1,3 +1,4 @@
+from tqdm import tqdm
 """
 THIS FILE MAINLY CONTAINS FUNCTIONS THAT COMMUNICATE BETWEEN MAIN AND RETRIEVER/WORKER
 """
@@ -7,21 +8,13 @@ def getDocumentContentFromDict(docid, COLLECTION_DICT):
     return COLLECTION_DICT[docid]
 
 
-def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, topK, worker):
+def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, topK, worker, workerNum):
     # Construct the sorted re-ranked list
     if topK == 0:
-        count = 0
         rankedCollection = []
-        total = 0
-        for each in RANKED_FILE_CONTENT:
-            total = total + len(each)
-        for query in RANKED_FILE_CONTENT:
+        for query in tqdm(RANKED_FILE_CONTENT, desc="Process " + str(workerNum)):
             queryCollection = []
             for document in query:
-                count += 1
-                print("----------------------------------")
-                print("Processing " + str(count) + "/" + str(total))
-                print("----------------------------------")
                 tempDocument = document
                 docid = document[1]
                 qid = document[0]
@@ -34,25 +27,14 @@ def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, topK, worker):
             rankedCollection.append(sortedQueryCollection)
         return rankedCollection
     else:
-        count = 0
         rankedCollection = []
-        total = 0
-        for each in RANKED_FILE_CONTENT:
-            if len(each) > topK:
-                total = total + topK
-            else:
-                total = total + len(each)
-        for query in RANKED_FILE_CONTENT:
+        for query in tqdm(RANKED_FILE_CONTENT, desc="Process " + str(workerNum)):
             queryCollection = []
             innerCount = 0
             for document in query:
                 if topK > len(query):
                     topK = len(query)
                 if innerCount < topK:
-                    count += 1
-                    print("----------------------------------")
-                    print("Processing " + str(count) + "/" + str(total))
-                    print("----------------------------------")
                     tempDocument = document
                     docid = document[1]
                     qid = document[0]
@@ -67,8 +49,8 @@ def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, topK, worker):
         return rankedCollection
 
 
-def generateResFile(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, CONF, topK, worker):
-    rankedCollection = rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, topK, worker)
+def generateResFile(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, CONF, topK, worker, workerNum):
+    rankedCollection = rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, topK, worker, workerNum)
     resPath = CONF["RESULT"]
     for query in rankedCollection:
         rank = 1

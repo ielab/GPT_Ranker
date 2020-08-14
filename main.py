@@ -17,8 +17,8 @@ print("--------------------------------------------------")
 
 
 def getResFiles():
-    topK = 100
-    generateResFile(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, CONF, topK, WORKER, 1)
+    topK = 1000
+    rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, QUERY, topK, WORKER, 1)
 
 
 if __name__ == '__main__':
@@ -26,7 +26,7 @@ if __name__ == '__main__':
     chunkRes = numpy.array_split(numpy.array(RANKED_FILE_CONTENT), totalProcess)
     processPool = []
     for index, val in enumerate(chunkRes):
-        p = Process(target=generateResFile, args=(chunkRes[index], COLLECTION_DICT, QUERY, CONF, 0, WORKER, index + 1))
+        p = Process(target=rerankDocuments, args=(chunkRes[index], COLLECTION_DICT, CONF, QUERY, 1000, WORKER, index + 1))
         p.start()
         processPool.append(p)
     for p in processPool:

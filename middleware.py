@@ -1,6 +1,3 @@
-from gpt_worker import *
-import numpy
-
 """
 THIS FILE MAINLY CONTAINS FUNCTIONS THAT COMMUNICATE BETWEEN MAIN AND RETRIEVER/WORKER
 """
@@ -10,17 +7,7 @@ def getDocumentContentFromDict(docid, COLLECTION_DICT):
     return COLLECTION_DICT[docid]
 
 
-def getPredictionScore(document: str, query: str):
-    # Get the prediction score from the GPT-2 model
-    worker = GPT2()
-    queryTokens = query.split(" ")
-
-    prob = worker.prediction(document, queryTokens, query)
-    score = numpy.sum(numpy.log(prob))
-    return score
-
-
-def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, CONF, topK):
+def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, topK, worker):
     # Construct the sorted re-ranked list
     if topK == 0:
         count = 0
@@ -40,7 +27,7 @@ def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, CONF, topK):
                 qid = document[0]
                 docContents = getDocumentContentFromDict(docid, COLLECTION_DICT)
                 queryContents = QUERY[qid]
-                score = getPredictionScore(docContents, queryContents)
+                score = worker.getPredictionScore(docContents, queryContents)
                 tempDocument.append(score)
                 queryCollection.append(tempDocument)
             sortedQueryCollection = sorted(queryCollection, key=lambda l: l[3], reverse=True)
@@ -71,7 +58,7 @@ def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, CONF, topK):
                     qid = document[0]
                     docContents = getDocumentContentFromDict(docid, COLLECTION_DICT)
                     queryContents = QUERY[qid]
-                    score = getPredictionScore(docContents, queryContents)
+                    score = worker.getPredictionScore(docContents, queryContents)
                     tempDocument.append(score)
                     queryCollection.append(tempDocument)
                     innerCount += 1
@@ -80,8 +67,8 @@ def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, CONF, topK):
         return rankedCollection
 
 
-def generateResFile(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, CONF, topK):
-    rankedCollection = rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, CONF, topK)
+def generateResFile(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, CONF, topK, worker):
+    rankedCollection = rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, topK, worker)
     resPath = CONF["RESULT"]
     for query in rankedCollection:
         rank = 1

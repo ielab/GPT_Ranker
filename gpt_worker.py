@@ -3,6 +3,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 import torch
 from transformers import *
 from scipy.special import softmax
+import numpy
 
 """
 THIS FILE MAINLY HANDLES THE GPT-2 RELATED WORK
@@ -33,3 +34,11 @@ class GPT2:
                 prob.append(result[index][val])
 
         return prob
+
+    def getPredictionScore(self, document, query):
+        # Get the prediction score from the GPT-2 model
+        queryTokens = query.split(" ")
+
+        prob = self.prediction(document, queryTokens, query)
+        score = numpy.sum(numpy.log(prob))
+        return score

@@ -12,9 +12,9 @@ def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, topK, worker, w
     # Construct the sorted re-ranked list
     if topK == 0:
         rankedCollection = []
-        for query in tqdm(RANKED_FILE_CONTENT, desc="Process " + str(workerNum)):
+        for query in tqdm(RANKED_FILE_CONTENT, desc="Process Query With Worker " + str(workerNum)):
             queryCollection = []
-            for document in query:
+            for document in tqdm(query, desc="Process Document With Worker " + str(workerNum)):
                 tempDocument = document
                 docid = document[1]
                 qid = document[0]
@@ -28,10 +28,10 @@ def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, QUERY, topK, worker, w
         return rankedCollection
     else:
         rankedCollection = []
-        for query in tqdm(RANKED_FILE_CONTENT, desc="Process " + str(workerNum)):
+        for query in tqdm(RANKED_FILE_CONTENT, desc="Process Query With Worker " + str(workerNum)):
             queryCollection = []
             innerCount = 0
-            for document in query:
+            for document in tqdm(query, desc="Process Document With Worker " + str(workerNum)):
                 if topK > len(query):
                     topK = len(query)
                 if innerCount < topK:

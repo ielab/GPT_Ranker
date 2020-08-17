@@ -1,9 +1,11 @@
 # GPT_Ranker
 
+This Branch Is For MSMARCO Passage Reranking Task Using GPT-2 Model
+
 ## TREC CAsT Datasets
 
 - MS MARCO: https://microsoft.github.io/msmarco/  
-  - git repo: https://github.com/microsoft/MSMARCO-Passage-Ranking
+  - Git Repo: https://github.com/microsoft/MSMARCO-Passage-Ranking
 - TREC CAR: http://trec-car.cs.unh.edu/datareleases/v2.0-release.html
 
 ## To Clone this repo

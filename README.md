@@ -1,5 +1,7 @@
 # GPT_Ranker
 
+This branch is for MSMARCO Passage Rerank Task Using docTTTTTquery Model
+
 ## TREC CAsT Datasets
 
 - MS MARCO: https://microsoft.github.io/msmarco/  

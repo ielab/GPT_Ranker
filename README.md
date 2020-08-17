@@ -14,6 +14,7 @@ git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
 
 ## Branches
 
-- `trec`: For TREC CAsT Task
-- `master`: For MSMARCO Passage Reranking Task
-- `document_reranking`: For MSMARCO Document Reranking Task
+- `master`: For MSMARCO Passage Reranking Task Using GPT-2
+- `document_reranking`: For MSMARCO Document Reranking Task Using GPT-2
+- `doc2query`: For MSMARCO Passage Reranking Task Using docTTTTTquery
+- `doc2query-doc`: For MSMARCO Document Reranking Task Using docTTTTTquery

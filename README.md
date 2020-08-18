@@ -18,3 +18,9 @@ git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
 - `document_reranking`: For MSMARCO Document Reranking Task Using GPT-2
 - `doc2query`: For MSMARCO Passage Reranking Task Using docTTTTTquery
 - `doc2query-doc`: For MSMARCO Document Reranking Task Using docTTTTTquery
+
+## File Structure
+
+_The file structure should be same as this_
+
+![The file structure should be same as this](./image/1.png "File Structure")

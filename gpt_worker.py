@@ -4,7 +4,7 @@ import torch
 from transformers import *
 from scipy.special import softmax
 import numpy
-
+DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 """
 THIS FILE MAINLY HANDLES THE GPT-2 RELATED WORK
 """
@@ -12,9 +12,17 @@ THIS FILE MAINLY HANDLES THE GPT-2 RELATED WORK
 
 class GPT2:
 
-    def __init__(self):
-        self.tokenizer = AutoTokenizer.from_pretrained("gpt2-large")
-        self.model = AutoModelWithLMHead.from_pretrained("gpt2-large")
+    def __init__(self, model_dir=None):
+        if model_dir is not None:
+            self.tokenizer = T5Tokenizer.from_pretrained(model_dir)
+            config = T5Config.from_pretrained(model_dir)
+            self.model = T5ForConditionalGeneration.from_pretrained(
+                'model.ckpt-1004000', from_tf=True, config=config)
+        else:
+            self.tokenizer = AutoTokenizer.from_pretrained("gpt2-large")
+            self.model = AutoModelWithLMHead.from_pretrained("gpt2-large")
+
+        self.model.to(DEVICE)
 
     def prediction(self, document, queryWords, query):
         prob = []

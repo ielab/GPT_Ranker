@@ -11,7 +11,7 @@ f.close()
 RANKED_FILE_CONTENT = readRankFile(CONF)
 QUERY = readQueryFile(CONF)
 COLLECTION_DICT = readCollectionFile(CONF,RANKED_FILE_CONTENT)
-WORKER = GPT2()
+WORKER = GPT2(CONF["T5_MODEL"])
 print("Loaded")
 print("--------------------------------------------------")
 
@@ -22,7 +22,7 @@ def getResFiles():
 
 
 if __name__ == '__main__':
-    totalProcess = 8 # cpu_count()
+    totalProcess = 8  # cpu_count()
     chunkRes = numpy.array_split(numpy.array(RANKED_FILE_CONTENT), totalProcess)
     processPool = []
     for index, val in enumerate(chunkRes):

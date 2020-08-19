@@ -11,7 +11,7 @@ f.close()
 RANKED_FILE_CONTENT = readRankFile(CONF)
 QUERY = readQueryFile(CONF)
 COLLECTION_DICT = readCollectionFile(CONF,RANKED_FILE_CONTENT)
-WORKER = T5(CONF["T5_MODEL"])
+WORKER = T5(CONF["MODEL"])
 print("Loaded")
 print("--------------------------------------------------")
 

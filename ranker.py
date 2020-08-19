@@ -61,8 +61,8 @@ class GPT2(Ranker):
     def prediction(self, document, query):
         prob = []
 
-        input_ids = self.tokenizer.encode(document + " " + query, return_tensors='pt')
-        query_ids = self.tokenizer.encode(query)
+        input_ids = self.tokenizer.encode(document + " " + query, return_tensors='pt').to(DEVICE)
+        query_ids = self.tokenizer.encode(query).to(DEVICE)
         doc_length = len(input_ids[0]) - len(query_ids)
         with torch.no_grad():
             outputs = self.model(input_ids=input_ids)

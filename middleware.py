@@ -34,5 +34,5 @@ def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, QUERY, topK, wor
         for inde, document in enumerate(sortedQueryCollection):
             line = document[0] + "\t" + document[1] + "\t" + str(inde + 1) + "\t" + str(document[3]) + "\n"
             lines.append(line)
-        with open("{}gpt2_large_rerank-{}.res".format(resPath, workerNum), "a+") as f:
+        with open("{}{}_large_rerank-{}.res".format(resPath, worker.name, workerNum), "a+") as f:
             f.writelines(lines)

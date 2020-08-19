@@ -1,7 +1,7 @@
 from helper import *
 from middleware import *
 from multiprocessing import *
-from gpt_worker import *
+from ranker import *
 
 print("--------------------------------------------------")
 print("Loading Config/BM25 Retrieved List/Query List/Collection Dict...")

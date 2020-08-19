@@ -87,7 +87,10 @@ def load_candidate_folder(path_to_candidate):
     qid_to_ranked_candidate_passages = {}
     files = os.listdir(path_to_candidate)
     for f in files:
-        qid_to_ranked_candidate_passages.update(load_candidate(path_to_candidate+'/'+f))
+        if f == '.DS_Store':
+            pass
+        else:
+            qid_to_ranked_candidate_passages.update(load_candidate(path_to_candidate+'/'+f))
     return qid_to_ranked_candidate_passages
 
 

@@ -1,19 +1,40 @@
 {
-  "INDEX": "data/pass_rerank/index/lucene-index-msmarco",
-  "QRELS": "data/pass_rerank/qrels/qrels.dev.small.tsv",
-  "QUERY": "data//pass_rerank/query/docs00.json",
-  "RANK_FILE": "data/pass_rerank/run.msmarco-passage.dev.small.tsv",
-  "RESULT": "result/t5/pass_rerank/",
-  "MODEL": "model/t5-base/model.ckpt-1004000",
-  "COLLECTION": [
-    "data/pass_rerank/collection_jsonl/docs00.json",
-    "data/pass_rerank/collection_jsonl/docs01.json",
-    "data/pass_rerank/collection_jsonl/docs02.json",
-    "data/pass_rerank/collection_jsonl/docs03.json",
-    "data/pass_rerank/collection_jsonl/docs04.json",
-    "data/pass_rerank/collection_jsonl/docs05.json",
-    "data/pass_rerank/collection_jsonl/docs06.json",
-    "data/pass_rerank/collection_jsonl/docs07.json",
-    "data/pass_rerank/collection_jsonl/docs08.json"
-  ]
+  "METHOD": "DOC",
+  "MODEL_NAME": "gpt2",
+  "T5_MODEL": "model/t5-base/model.ckpt-1004000",
+  "GPT2_MODEL": "model/gpt-2/",
+  "DOC_CONF": {
+    "INDEX": "data/doc_rerank/index/lucene-index.msmarco-doc.pos+docvectors+rawdocs",
+    "QRELS": "data/doc_rerank/qrels/qrels.msmarco-doc.dev.txt",
+    "QUERY": "data//doc_rerank/query/docs00.json",
+    "RANK_FILE": "data/doc_rerank/run.msmarco-doc.dev.bm25.tuned.txt",
+    "RESULT": "result/doc_rerank/",
+    "COLLECTION": [
+      "data/doc_rerank/collection_jsonl/docs00.json",
+      "data/doc_rerank/collection_jsonl/docs01.json",
+      "data/doc_rerank/collection_jsonl/docs02.json",
+      "data/doc_rerank/collection_jsonl/docs03.json",
+      "data/doc_rerank/collection_jsonl/docs04.json",
+      "data/doc_rerank/collection_jsonl/docs05.json",
+      "data/doc_rerank/collection_jsonl/docs06.json"
+    ]
+  },
+  "PASS_CONF": {
+    "INDEX": "data/pass_rerank/index/lucene-index-msmarco",
+    "QRELS": "data/pass_rerank/qrels/qrels.dev.small.tsv",
+    "QUERY": "data//pass_rerank/query/docs00.json",
+    "RANK_FILE": "data/pass_rerank/run.msmarco-passage.dev.small.tsv",
+    "RESULT": "result/pass_rerank/",
+    "COLLECTION": [
+      "data/pass_rerank/collection_jsonl/docs00.json",
+      "data/pass_rerank/collection_jsonl/docs01.json",
+      "data/pass_rerank/collection_jsonl/docs02.json",
+      "data/pass_rerank/collection_jsonl/docs03.json",
+      "data/pass_rerank/collection_jsonl/docs04.json",
+      "data/pass_rerank/collection_jsonl/docs05.json",
+      "data/pass_rerank/collection_jsonl/docs06.json",
+      "data/pass_rerank/collection_jsonl/docs07.json",
+      "data/pass_rerank/collection_jsonl/docs08.json"
+    ]
+  }
 }

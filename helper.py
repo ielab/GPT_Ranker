@@ -6,9 +6,9 @@ THIS FILE MAINLY PROVIDES HELPER FUNCTIONS TO OTHER FUNCTIONS
 """
 
 
-def readRankFile(CONF):
+def readRankFile(CONF, SCONF):
     # Read the ranked file from local, which is the run.msmarco-passage.dev.small.tsv file
-    rankFilePath = CONF["RANK_FILE"]
+    rankFilePath = SCONF["RANK_FILE"]
 
     with open(rankFilePath, 'r') as f:
         file = f.readlines()
@@ -17,8 +17,13 @@ def readRankFile(CONF):
     cleanedCol = []
     for each in file:
         temp = each.replace("\n", "")
-        temp = temp.split("\t")
-        cleanedCol.append(temp)
+        if CONF["METHOD"] == "PASS":
+            temp = temp.split("\t")
+            cleanedCol.append(temp)
+        else:
+            temp = temp.split(" ")
+            newtemp = [temp[0], temp[2], temp[3]]
+            cleanedCol.append(newtemp)
 
     fullCollection = []
     tempCollection = []
@@ -60,12 +65,6 @@ def readQueryFile(CONF):
     return queryDict
 
 
-def chunks(lst, n):
-    # Create smaller lists evenly from lst
-    for i in range(0, len(lst), n):
-        yield lst[i:i + n]
-
-
 def readCollectionFile(CONF, RANKED_FILE_CONTENT):
     dic = {}
     for query in RANKED_FILE_CONTENT:
@@ -86,6 +85,7 @@ def getDocumentContent(CONF, dic):
     for path in tqdm(collectionPaths, desc='Loading Collection...'):
         with open(path, "r") as f:
             lines = f.readlines()
+        print(lines[0])
         for line in lines:
             jsonL = json.loads(line)
             if jsonL["id"] in dic:

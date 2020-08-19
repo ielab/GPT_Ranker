@@ -8,9 +8,9 @@ def getDocumentContentFromDict(docid, COLLECTION_DICT):
     return COLLECTION_DICT[docid]
 
 
-def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, QUERY, topK, worker, workerNum):
+def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUERY, topK, worker, workerNum):
     # Construct the sorted re-ranked list
-    resPath = CONF["RESULT"]
+    resPath = SCONF["RESULT"]
     for query in tqdm(RANKED_FILE_CONTENT, desc="Process Query With Worker " + str(workerNum)):
         queryCollection = []
         innerCount = 0
@@ -34,5 +34,5 @@ def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, QUERY, topK, wor
         for inde, document in enumerate(sortedQueryCollection):
             line = document[0] + "\t" + document[1] + "\t" + str(inde + 1) + "\t" + str(document[3]) + "\n"
             lines.append(line)
-        with open("{}gpt2_large_rerank-{}.res".format(resPath, workerNum), "a+") as f:
+        with open("{}{}/{}_rerank-{}.res".format(resPath, CONF["MODEL_NAME"], CONF["MODEL_NAME"], workerNum), "a+") as f:
             f.writelines(lines)

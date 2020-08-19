@@ -61,3 +61,10 @@ trainer = Trainer(
 
 trainer.train()
 trainer.evaluate()
+
+# https://huggingface.co/transformers/training.html#trainer
+# https://towardsdatascience.com/fine-tuning-gpt2-for-text-generation-using-pytorch-2ee61a4f1ba7
+# https://github.com/itsuncheng/fine-tuning-GPT2
+# https://github.com/itsuncheng/fine-tuning-GPT2/blob/master/preprocessing.ipynb
+# https://mccormickml.com/2019/07/22/BERT-fine-tuning/
+# https://colab.research.google.com/drive/1pTuQhug6Dhl9XalKB0zUGf4FIdYFlpcX

@@ -1,7 +1,7 @@
 {
   "INDEX": "data/pass_rerank/index/lucene-index-msmarco",
   "QRELS": "data/pass_rerank/qrels/qrels.dev.small.tsv",
-  "QUERY": "data/pass_rerank/query/docs00.json",
+  "QUERY": "data//pass_rerank/query/docs00.json",
   "RANK_FILE": "data/pass_rerank/run.msmarco-passage.dev.small.tsv",
   "RESULT": "result/t5/pass_rerank/",
   "MODEL": "model/t5-base/model.ckpt-1004000",

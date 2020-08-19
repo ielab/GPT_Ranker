@@ -14,13 +14,6 @@ This Branch Is For MSMARCO Passage Reranking Task Using GPT-2 Model
 
 git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
 
-## Branches
-
-- `master`: For MSMARCO Passage Reranking Task Using GPT-2
-- `document_reranking`: For MSMARCO Document Reranking Task Using GPT-2
-- `doc2query`: For MSMARCO Passage Reranking Task Using docTTTTTquery
-- `doc2query-doc`: For MSMARCO Document Reranking Task Using docTTTTTquery
-
 ## File Structure
 
 _The file structure should be same as this_

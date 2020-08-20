@@ -18,7 +18,7 @@ def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUERY, to
             topK = len(query)
         for document in tqdm(query, desc="Process Document With Worker " + str(workerNum)):
             if innerCount < topK:
-                tempDocument = document
+                tempDocument = list(document)
                 docid = document[1]
                 qid = document[0]
                 docContents = getDocumentContentFromDict(docid, COLLECTION_DICT)

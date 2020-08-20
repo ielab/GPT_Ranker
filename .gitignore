@@ -6,3 +6,4 @@ __pycache__
 model/
 logs/
 lucene-index-msmarco/
+trec_cast_2020/

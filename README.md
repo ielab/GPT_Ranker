@@ -61,8 +61,6 @@ GPT_Ranker/
 |    |    +--- TRAINING DATA FOR MSMARCO PASSAGE
 |    +--- doc_train/
 |    |    +--- TRAINING DATA FOR MSMARCO DOCUMENT
-+--- image/
-|    +--- 1.png
 +--- logs/
 |    +--- gpt2/
 |    |    +--- CONTAIN GPT2 TRAINING LOGS

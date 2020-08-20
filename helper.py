@@ -85,7 +85,6 @@ def getDocumentContent(CONF, dic):
     for path in tqdm(collectionPaths, desc='Loading Collection...'):
         with open(path, "r") as f:
             lines = f.readlines()
-        print(lines[0])
         for line in lines:
             jsonL = json.loads(line)
             if jsonL["id"] in dic:

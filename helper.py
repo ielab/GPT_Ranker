@@ -112,3 +112,21 @@ def results_to_trecrun(folder_path, output, runid):
                     topicid, docid, rank, score = line.split("\t")
                     line = "{} Q0 {} {} {} {}".format(topicid, docid, rank, score, runid)
                     trecrun_file.write(line+"\n")
+
+
+def results_to_msrun(folder_path, output):
+    # combine res files in a folder into a single trec run file, ready to submit.
+    files = os.listdir(folder_path)
+    trecrun_file = open(output, "a")
+
+    for f in files:
+        if f == '.DS_Store':
+            pass
+        else:
+            file_path = folder_path+'/'+f
+            with open(file_path) as f:
+                for line in f:
+                    line = line.strip()
+                    topicid, docid, rank, score = line.split("\t")
+                    line = "{}\t{}\t{}\t{}".format(topicid, docid, rank, score)
+                    trecrun_file.write(line+"\n")

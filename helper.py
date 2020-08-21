@@ -110,7 +110,8 @@ def results_to_trecrun(folder_path, output, runid):
                 for line in f:
                     line = line.strip()
                     topicid, docid, rank, score = line.split("\t")
-                    line = "{} Q0 {} {} {} {}".format(topicid, docid, rank, score, runid)
+                    line = "{} Q0 {} {} {} {}".format(
+                        topicid, docid, rank, score, runid)
                     trecrun_file.write(line+"\n")
 
 
@@ -127,6 +128,6 @@ def results_to_msrun(folder_path, output):
             with open(file_path) as f:
                 for line in f:
                     line = line.strip()
-                    topicid, docid, rank, score = line.split("\t")
+                    topicid, docid, rank, score = line.split(" ")
                     line = "{}\t{}\t{}\t{}".format(topicid, docid, rank, score)
                     trecrun_file.write(line+"\n")

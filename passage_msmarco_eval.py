@@ -24,12 +24,13 @@ def load_reference_from_stream(f):
     for l in f:
         try:
             l = l.strip().split('\t')
+            print(l)
             qid = int(l[0])
             if qid in qids_to_relevant_passageids:
                 pass
             else:
                 qids_to_relevant_passageids[qid] = []
-            qids_to_relevant_passageids[qid].append(int(l[2]))
+            qids_to_relevant_passageids[qid].append(l[2])
         except:
             raise IOError('\"%s\" is not valid format' % l)
     return qids_to_relevant_passageids
@@ -90,7 +91,8 @@ def load_candidate_folder(path_to_candidate):
         if f == '.DS_Store':
             pass
         else:
-            qid_to_ranked_candidate_passages.update(load_candidate(path_to_candidate+'/'+f))
+            qid_to_ranked_candidate_passages.update(
+                load_candidate(path_to_candidate+'/'+f))
     return qid_to_ranked_candidate_passages
 
 
@@ -149,7 +151,8 @@ def compute_metrics(qids_to_relevant_passageids, qids_to_ranked_candidate_passag
                     ranking.append(i + 1)
                     break
     if len(ranking) == 0:
-        raise IOError("No matching QIDs found. Are you sure you are scoring the evaluation set?")
+        raise IOError(
+            "No matching QIDs found. Are you sure you are scoring the evaluation set?")
 
     MRR = MRR / len(qids_to_relevant_passageids)
     all_scores['MRR @10'] = MRR
@@ -177,13 +180,16 @@ def compute_metrics_from_files(path_to_reference, path_to_candidate, perform_che
     qids_to_relevant_passageids = load_reference(path_to_reference)
 
     if os.path.isdir(path_to_candidate):  # if it is a result folder
-        qids_to_ranked_candidate_passages = load_candidate_folder(path_to_candidate)
+        qids_to_ranked_candidate_passages = load_candidate_folder(
+            path_to_candidate)
     else:
         qids_to_ranked_candidate_passages = load_candidate(path_to_candidate)
 
     if perform_checks:
-        allowed, message = quality_checks_qids(qids_to_relevant_passageids, qids_to_ranked_candidate_passages)
-        if message != '': print(message)
+        allowed, message = quality_checks_qids(
+            qids_to_relevant_passageids, qids_to_ranked_candidate_passages)
+        if message != '':
+            print(message)
 
     return compute_metrics(qids_to_relevant_passageids, qids_to_ranked_candidate_passages)
 
@@ -196,7 +202,8 @@ def main():
     if len(sys.argv) == 3:
         path_to_reference = sys.argv[1]
         path_to_candidate = sys.argv[2]
-        metrics = compute_metrics_from_files(path_to_reference, path_to_candidate)
+        metrics = compute_metrics_from_files(
+            path_to_reference, path_to_candidate)
         print('#####################')
         for metric in sorted(metrics):
             print('{}: {}'.format(metric, metrics[metric]))

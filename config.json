@@ -7,7 +7,7 @@
     "CHUNK_SIZE": 57,
     "INDEX": "data/doc_rerank/index/lucene-index.msmarco-doc.pos+docvectors+rawdocs",
     "QRELS": "data/doc_rerank/qrels/qrels.msmarco-doc.dev.txt",
-    "QUERY": "data//doc_rerank/query/docs00.json",
+    "QUERY": "data//doc_rerank/query/doc-msmarco-dev-queries.json",
     "RANK_FILE": "data/doc_rerank/formatted_run.msmarco-doc.dev.bm25.tuned.txt",
     "RESULT": "result/doc_rerank/",
     "COLLECTION": [
@@ -23,7 +23,7 @@
   "PASS_CONF": {
     "INDEX": "data/pass_rerank/index/lucene-index-msmarco",
     "QRELS": "data/pass_rerank/qrels/qrels.dev.small.tsv",
-    "QUERY": "data//pass_rerank/query/docs00.json",
+    "QUERY": "data//pass_rerank/query/pass-query-dev.small.json",
     "RANK_FILE": "data/pass_rerank/run.msmarco-passage.dev.small.tsv",
     "RESULT": "result/pass_rerank/",
     "COLLECTION": [

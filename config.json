@@ -4,6 +4,7 @@
   "T5_MODEL": "model/t5-base/model.ckpt-1004000",
   "GPT2_MODEL": "model/gpt-2/",
   "DOC_CONF": {
+    "CHUNK_SIZE": 57,
     "INDEX": "data/doc_rerank/index/lucene-index.msmarco-doc.pos+docvectors+rawdocs",
     "QRELS": "data/doc_rerank/qrels/qrels.msmarco-doc.dev.txt",
     "QUERY": "data//doc_rerank/query/docs00.json",

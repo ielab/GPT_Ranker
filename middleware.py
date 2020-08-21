@@ -23,7 +23,7 @@ def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUERY, to
                 qid = document[0]
                 docContents = getDocumentContentFromDict(docid, COLLECTION_DICT)
                 queryContents = QUERY[qid]
-                score = worker.getPredictionScore(docContents, queryContents)
+                score = worker.predict(docContents, queryContents, SCONF)
                 tempDocument.append(score)
                 queryCollection.append(tempDocument)
                 innerCount += 1

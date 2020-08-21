@@ -23,8 +23,8 @@ def readRankFile(CONF, SCONF):
             temp = temp.split("\t")
             cleanedCol.append(temp)
         else:
-            temp = temp.split(" ")
-            newtemp = [temp[0], temp[2], temp[3]]
+            temp = temp.split("\t")
+            newtemp = [temp[0], temp[1], temp[2]]
             cleanedCol.append(newtemp)
 
     fullCollection = []

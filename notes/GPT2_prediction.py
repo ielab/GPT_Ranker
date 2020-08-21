@@ -21,8 +21,8 @@ def prediction(document, query):
         logits = outputs[0][0]
         distributions = softmax(logits.numpy(), axis=1)
         for index, val in enumerate(query_ids):
-            print(np.sum(distributions[doc_length+index]))
             prob.append(distributions[doc_length+index][val])
+            print(np.argmax())
     return prob
 
 

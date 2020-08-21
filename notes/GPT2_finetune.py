@@ -1,5 +1,4 @@
-
-from transformers import GPT2LMHeadModel, GPT2Tokenizer, Trainer, TrainingArguments
+from transformers import GPT2LMHeadModel, GPT2Tokenizer, Trainer, TrainingArguments, LineByLineTextDataset
 from torch.utils.data import TensorDataset, random_split
 import torch
 
@@ -9,9 +8,7 @@ model = GPT2LMHeadModel.from_pretrained('gpt2-large')
 tokenizer = GPT2Tokenizer.from_pretrained('gpt2-large')
 
 special_token_dict = {
-    'bos_token': '<BOS>',
-    'eos_token': '<EOS>',
-    'pad_token': '<PAD>'
+    'eos_token': '<EOS>'
 }
 num_added_toks = tokenizer.add_special_tokens(special_token_dict)
 model.resize_token_embeddings(len(tokenizer))

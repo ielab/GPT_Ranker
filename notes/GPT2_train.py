@@ -44,6 +44,7 @@ while True:
     eval_output = trainer.evaluate()
     perplexity = math.exp(eval_output["eval_loss"])
     print("perplexity:", perplexity)
-    if perplexity < 1:
+    if perplexity < 1.1:
         trainer.save_model()
         tokenizer.save_pretrained(training_args.output_dir)
+        break

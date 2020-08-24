@@ -1,5 +1,6 @@
 from transformers import AutoTokenizer, Trainer, TrainingArguments, GPT2LMHeadModel, LineByLineTextDataset, \
     DataCollatorForLanguageModeling
+import torch
 
 import math
 
@@ -10,11 +11,12 @@ model = GPT2LMHeadModel.from_pretrained("results")
 special_token_dict = {
     'pad_token': '<PAD>',
 }
-
 num_added_toks = tokenizer.add_special_tokens(special_token_dict)
 model.resize_token_embeddings(len(tokenizer))
 
 train_set = LineByLineTextDataset(tokenizer=tokenizer, file_path="train.txt", block_size=None)
+torch.save(train_set, 'train_data.pt')
+
 
 data_collator = DataCollatorForLanguageModeling(
         tokenizer=tokenizer, mlm=False)

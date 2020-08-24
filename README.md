@@ -36,8 +36,10 @@ GPT_Ranker/
 |    |    +--- qrels/
 |    |    |    +--- qrels.msmarco-doc.dev.txt
 |    |    +--- query/
-|    |    |    +--- docs00.json
-|    |    +--- run.msmarco-doc.dev.bm25.tuned.txt
+|    |    |    +--- doc-msmarco-dev-queries.json
+|    |    |    +--- doc-msmarco-test2020-queries.json
+|    |    +--- formatted_run.msmarco-doc.dev.bm25.tuned.txt
+|    |    +--- formatted_run.msmarco-doc.test.bm25.tuned.txt
 |    +--- pass_rerank
 |    |    +--- collection_jsonl/
 |    |    |    +--- docs00.json
@@ -54,13 +56,18 @@ GPT_Ranker/
 |    |    |    |    +--- HERE CONTAINS THE ANSERINI MSMARCO PASSAGE INDEX
 |    |    +--- qrels/
 |    |    |    +--- qrels.dev.small.tsv
+|    |    |    +--- pass-qrels.msmarco-dev.full.txt
 |    |    +--- query/
-|    |    |    +--- docs00.json
+|    |    |    +--- pass-queries.dev.json
+|    |    |    +--- pass-queries.eval.json
+|    |    |    +--- pass-query-dev.small.json
 |    |    +--- run.msmarco-passage.dev.small.tsv
+|    |    +--- run.msmarco-passage.dev.full.tsv
+|    |    +--- run.msmarco-passage.dev.eval.tsv
 |    +--- pass_train/
-|    |    +--- TRAINING DATA FOR MSMARCO PASSAGE
+|    |    +--- doc_query_pairs.train.tsv
 |    +--- doc_train/
-|    |    +--- TRAINING DATA FOR MSMARCO DOCUMENT
+|    |    +--- doc_query_pairs.train.tsv
 +--- logs/
 |    +--- gpt2/
 |    |    +--- CONTAIN GPT2 TRAINING LOGS
@@ -86,12 +93,14 @@ GPT_Ranker/
 |    +--- pass_rerank/
 |    |    +--- gpt2/
 |    |    +--- t5/
++--- notes/
 +--- config.json
 +--- fine_tuning.py
 +--- helper.py
 +--- main.py
 +--- middleware.py
-+--- msmarco_eval.py
++--- passage_msmarco_eval.py
++--- doc_msmarco_eval.py
 +--- ranker.py
 +--- anserini_retriever.py
 +--- README.md

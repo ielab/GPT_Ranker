@@ -14,7 +14,7 @@ special_token_dict = {
 num_added_toks = tokenizer.add_special_tokens(special_token_dict)
 model.resize_token_embeddings(len(tokenizer))
 
-train_set = LineByLineTextDataset(tokenizer=tokenizer, file_path="train.txt", block_size=None)
+train_set = LineByLineTextDataset(tokenizer=tokenizer, file_path="google_TPU_commands.txt", block_size=None)
 torch.save(train_set, 'train_data.pt')
 
 

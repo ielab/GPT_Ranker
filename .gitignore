@@ -3,6 +3,8 @@
 __pycache__
 /venv
 
+/lucene-index-msmarco/
+/result/doc_rerank/t5/
 /data/doc_rerank/collection_jsonl/*.json
 /data/doc_rerank/index/lucene-index.msmarco-doc.pos+docvectors+rawdocs/*.fdt
 /data/doc_rerank/index/lucene-index.msmarco-doc.pos+docvectors+rawdocs/*.fdx

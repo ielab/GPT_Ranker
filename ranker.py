@@ -37,7 +37,7 @@ class T5:
                 decoder_input_ids = self.tokenizer.encode(query, return_tensors='pt').to(DEVICE)
 
                 with torch.no_grad():
-                    outputs = self.model(input_ids=encoder_input_ids, labels=decoder_input_ids)
+                    outputs = self.model(input_ids=encoder_input_ids, labels=decoder_input_ids).to(DEVICE)
                     logits = outputs[1][0]
                     distributions = softmax(logits.numpy(), axis=1)
                     for index, val in enumerate(decoder_input_ids[0]):
@@ -52,7 +52,7 @@ class T5:
             decoder_input_ids = self.tokenizer.encode(query, return_tensors='pt').to(DEVICE)
 
             with torch.no_grad():
-                outputs = self.model(input_ids=encoder_input_ids, labels=decoder_input_ids)
+                outputs = self.model(input_ids=encoder_input_ids, labels=decoder_input_ids).to(DEVICE)
                 logits = outputs[1][0]
                 distributions = softmax(logits.numpy(), axis=1)
                 for index, val in enumerate(decoder_input_ids[0]):

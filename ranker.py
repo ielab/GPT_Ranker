@@ -4,7 +4,7 @@ import torch
 from transformers import *
 from scipy.special import softmax
 import numpy
-DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+DEVICE = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 """
 THIS FILE MAINLY HANDLES THE RANKER RELATED WORK

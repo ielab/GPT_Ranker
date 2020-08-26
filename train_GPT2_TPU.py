@@ -8,24 +8,20 @@ from typing import Optional
 import torch_xla.distributed.xla_multiprocessing as xmp
 
 
-from transformers import GPT2LMHeadModel, PreTrainedTokenizer, AutoTokenizer
+from transformers import GPT2LMHeadModel, PreTrainedTokenizer, GPT2Tokenizer
 from transformers import (
-    AutoConfig,
-    CONFIG_MAPPING,
-    MODEL_WITH_LM_HEAD_MAPPING,
     HfArgumentParser,
     LineByLineTextDataset,
-    TextDataset,
     DataCollatorForLanguageModeling,
     Trainer,
     TrainingArguments,
     set_seed,
+DataCollator,
 )
 
 logger = logging.getLogger(__name__)
 
-MODEL_CONFIG_CLASSES = list(MODEL_WITH_LM_HEAD_MAPPING.keys())
-MODEL_TYPES = tuple(conf.model_type for conf in MODEL_CONFIG_CLASSES)
+
 
 @dataclass
 class ModelArguments:
@@ -33,18 +29,8 @@ class ModelArguments:
     Arguments pertaining to which model/config/tokenizer we are going to fine-tune, or train from scratch.
     """
 
-    model_name_or_path: Optional[str] = field(
-        default=None,
-        metadata={
-            "help": "The model checkpoint for weights initialization. Leave None if you want to train a model from scratch."
-        },
-    )
-    model_type: Optional[str] = field(
-        default=None,
-        metadata={"help": "If training from scratch, pass a model type from the list: " + ", ".join(MODEL_TYPES)},
-    )
-    config_name: Optional[str] = field(
-        default=None, metadata={"help": "Pretrained config name or path if not the same as model_name"}
+    model_name_or_path: str = field(
+        metadata={"help": "Path to pretrained model or model identifier from huggingface.co/models"}
     )
     tokenizer_name: Optional[str] = field(
         default=None, metadata={"help": "Pretrained tokenizer name or path if not the same as model_name"}
@@ -94,12 +80,12 @@ class DataTrainingArguments:
 
 def get_dataset(args: DataTrainingArguments, tokenizer: PreTrainedTokenizer, evaluate=False):
     file_path = args.eval_data_file if evaluate else args.train_data_file
+    with open(file_path, 'r') as f:
+        for line in f:
+            print(line)
     if args.line_by_line:
         return LineByLineTextDataset(tokenizer=tokenizer, file_path=file_path, block_size=args.block_size)
-    else:
-        return TextDataset(
-            tokenizer=tokenizer, file_path=file_path, block_size=args.block_size, overwrite_cache=args.overwrite_cache
-        )
+
 
 
 def main():
@@ -147,52 +133,19 @@ def main():
     # Set seed
     set_seed(training_args.seed)
 
-    # Load pretrained model and tokenizer
-    #
-    # Distributed training:
-    # The .from_pretrained methods guarantee that only one local process can concurrently
-    # download model & vocab.
 
-    if model_args.config_name:
-        config = AutoConfig.from_pretrained(model_args.config_name, cache_dir=model_args.cache_dir)
-    elif model_args.model_name_or_path:
-        config = AutoConfig.from_pretrained(model_args.model_name_or_path, cache_dir=model_args.cache_dir)
-    else:
-        config = CONFIG_MAPPING[model_args.model_type]()
-        logger.warning("You are instantiating a new config instance from scratch.")
+    tokenizer = GPT2Tokenizer.from_pretrained(model_args.model_name_or_path, cache_dir=model_args.cache_dir)
 
-    if model_args.tokenizer_name:
-        tokenizer = AutoTokenizer.from_pretrained(model_args.tokenizer_name, cache_dir=model_args.cache_dir)
-    elif model_args.model_name_or_path:
-        tokenizer = AutoTokenizer.from_pretrained(model_args.model_name_or_path, cache_dir=model_args.cache_dir)
-    else:
-        raise ValueError(
-            "You are instantiating a new tokenizer from scratch. This is not supported, but you can do it from another script, save it,"
-            "and load it from here, using --tokenizer_name"
+    model = GPT2LMHeadModel.from_pretrained(
+        model_args.model_name_or_path,
+        from_tf=bool(".ckpt" in model_args.model_name_or_path),
+        cache_dir=model_args.cache_dir,
         )
-
-    if model_args.model_name_or_path:
-        model = GPT2LMHeadModel.from_pretrained(
-            model_args.model_name_or_path,
-            from_tf=bool(".ckpt" in model_args.model_name_or_path),
-            cache_dir=model_args.cache_dir,
-        )
-    else:
-        logger.info("Training new model from scratch")
-        model = GPT2LMHeadModel.from_config(config)
 
     # add special tokens to the tokenizer。
     special_tokens_dict = {'eos_token': '<EOS>', 'pad_token': '<PAD>'}
-    num_added_toks = tokenizer.add_special_tokens(special_tokens_dict)
+    tokenizer.add_special_tokens(special_tokens_dict)
     model.resize_token_embeddings(len(tokenizer))
-
-    # the list of models are using mask out training, so mlm argument must be true.
-    # (although we don't care because we are tuning GPT2)
-    if config.model_type in ["bert", "roberta", "distilbert", "camembert"] and not data_args.mlm:
-        raise ValueError(
-            "BERT and RoBERTa-like models do not have LM heads but masked LM heads. They must be run using the --mlm "
-            "flag (masked language modeling)."
-        )
 
     if data_args.block_size <= 0:
         data_args.block_size = tokenizer.max_len
@@ -231,10 +184,7 @@ def main():
         # so that you can share your model easily on huggingface.co/models =)
         if trainer.is_world_master():
             tokenizer.save_pretrained(training_args.output_dir)
-        # For convenience, we also re-save the tokenizer to the same directory,
-        # so that you can share your model easily on huggingface.co/models =)
-        if trainer.is_world_master():
-            tokenizer.save_pretrained(training_args.output_dir)
+
 
     # Evaluation
     results = {}

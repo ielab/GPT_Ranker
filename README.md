@@ -1,19 +1,40 @@
 # GPT_Ranker
 
-This Branch Is For MSMARCO Passage Reranking Task Using GPT-2 Model
-
-
+This Branch Is For MSMARCO Document/Passage Reranking Task Using GPT-2/T5 Model
+- - -
 ## TREC CAsT Datasets
 
 - MS MARCO: https://microsoft.github.io/msmarco/  
   - Git Repo: https://github.com/microsoft/MSMARCO-Passage-Ranking
 - TREC CAR: http://trec-car.cs.unh.edu/datareleases/v2.0-release.html
 - castorini docTTTTTquery: https://github.com/castorini/docTTTTTquery#ms-marco-document-dataset
-
+- - -
 ## To Clone this repo
 
 git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
+- - -
+## The recall/mrr@10 evaluation for msmarco passage dev small bm25 tuned initial retrieval
 
+![MSMARCO Passage Dev Small BM25 Tuned](./images/msmarco-dev-small-bm25-tuned-eval.png)
+
+```
+#####################
+MRR @100: 0.278809
+QueriesRanked: 5193
+#####################
+```
+- - -
+## The recall/mrr@10 evaluation for msmarco doc dev bm25 tuned initial retrieval
+
+![MSMARCO Document Dev BM25 Tuned](./images/msmarco-doc-dev-bm25-tuned-eval.png)
+
+```
+#####################
+MRR @10: 0.187412
+QueriesRanked: 6980
+#####################
+```
+- - -
 ## File Structure
 
 _The file structure should be same as this_
@@ -104,5 +125,5 @@ GPT_Ranker/
 +--- ranker.py
 +--- anserini_retriever.py
 +--- README.md
-+--- .gitignore
++--- SOME OTHER FILES
 ```

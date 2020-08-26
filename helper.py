@@ -1,6 +1,6 @@
 import json
 import os
-
+import numpy as np
 from tqdm import tqdm
 
 """
@@ -39,11 +39,11 @@ def readRankFile(CONF, SCONF):
             tempCollection.append(element)
         else:
             currentID = element[0]
-            fullCollection.append(tempCollection)
+            fullCollection.append(np.array(tempCollection))
             tempCollection = [element]
         if element[0] == cleanedCol[-1][0]:
             lastCollection.append(element)
-    fullCollection.append(lastCollection)
+    fullCollection.append(np.array(lastCollection))
 
     return fullCollection
 

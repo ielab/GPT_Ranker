@@ -52,13 +52,35 @@ class T5:
             decoder_input_ids = self.tokenizer.encode(query, return_tensors='pt').to(DEVICE)
 
             with torch.no_grad():
-                outputs = self.model(input_ids=encoder_input_ids, labels=decoder_input_ids).to(DEVICE)
+                outputs = self.model(input_ids=encoder_input_ids, labels=decoder_input_ids)
                 logits = outputs[1][0]
                 distributions = softmax(logits.numpy(), axis=1)
                 for index, val in enumerate(decoder_input_ids[0]):
                     prob.append(distributions[index][val])
             score = numpy.sum(numpy.log(prob))
             return score
+
+
+    def batchPredict(self, documents, query, conf):
+        documents = [document + ' </s>' for document in documents]
+        querys = [query] * len(documents)
+        encoded_encoder_inputs = self.tokenizer(documents, padding=True, truncation=True, return_tensors="pt").to(DEVICE)
+        encoded_decoder_inputs = self.tokenizer(querys, padding=True, truncation=True, return_tensors="pt").to(DEVICE)
+        decoder_input_ids = encoded_decoder_inputs["input_ids"][0]
+        scores = []
+        with torch.no_grad():
+            outputs = self.model(input_ids=encoded_encoder_inputs["input_ids"],
+                                 labels=encoded_decoder_inputs["input_ids"],
+                                 attention_mask=encoded_encoder_inputs["attention_mask"])
+            batch_logits = outputs[1]
+            for logits in batch_logits:
+                distributions = softmax(logits.numpy(), axis=1)
+                prob = []
+                for index, val in enumerate(decoder_input_ids):
+                    prob.append(distributions[index][val])
+                score = numpy.sum(numpy.log(prob))
+                scores.append(score)
+        return scores
 
 
 class GPT2:

@@ -62,3 +62,5 @@ __pycache__
 /data/doc_train/gpt2_formatted_doc_query_pairs.train.valid.tsv
 /data/doc_train/t5_formatted_doc_query_pairs.train.valid.tsv
 /data/pass_train/gpt2_formatted_pass_query_pairs.train.valid.tsv
+/data/pass_train/gpt2_space_separated_pass_query_pairs.train.txt
+/data/pass_train/c.py

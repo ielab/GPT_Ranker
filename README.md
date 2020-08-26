@@ -1,21 +1,59 @@
 # GPT_Ranker
 
-This Branch Is For MSMARCO Document/Passage Reranking Task Using GPT-2/T5 Model
+This Repo Is For MSMARCO Document/Passage Reranking Task Using GPT-2/T5 Model
 - - -
-## TREC CAsT Datasets
 
-- MS MARCO: https://microsoft.github.io/msmarco/  
-  - Git Repo: https://github.com/microsoft/MSMARCO-Passage-Ranking
-- TREC CAR: http://trec-car.cs.unh.edu/datareleases/v2.0-release.html
-- castorini docTTTTTquery: https://github.com/castorini/docTTTTTquery#ms-marco-document-dataset
+## Related Links
+
+### Dataset
+
+- [MS MARCO Home Page](https://microsoft.github.io/msmarco/)
+- [Passage Ranking Git Repo](https://github.com/microsoft/MSMARCO-Passage-Ranking)
+- [Document Ranking Git Repo](https://github.com/microsoft/MSMARCO-Document-Ranking)
+- [Jimmy Lin Anserini Passage Retrieval](https://github.com/castorini/anserini/blob/master/docs/experiments-msmarco-passage.md)
+- [Jimmy Lin Anserini Document Retrieval](https://github.com/castorini/anserini/blob/master/docs/experiments-msmarco-doc.md)
+- [TREC 2020 Deep Learning Task](https://microsoft.github.io/TREC-2020-Deep-Learning/)
+
+### Models
+
+- [castorini docTTTTTquery](https://github.com/castorini/docTTTTTquery#ms-marco-document-dataset)
+- [Google T5](https://github.com/google-research/text-to-text-transfer-transformer)
+- [OpenAI GPT-2](https://github.com/openai/gpt-2)
+- [Hugging Face Framework](https://github.com/huggingface/transformers)
+
+### Traditional Models
+
+- [Query Likelihood Language Model](https://en.wikipedia.org/wiki/Query_likelihood_model)
+
+### Tools
+
+[Google Cloud TPU](https://cloud.google.com/tpu/docs/quickstart)
+
 - - -
 ## To Clone this repo
 
+```
 git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
-- - -
-## The recall/mrr@10 evaluation for msmarco passage dev small bm25 tuned initial retrieval
+```
 
-![MSMARCO Passage Dev Small BM25 Tuned](./images/msmarco-dev-small-bm25-tuned-eval.png)
+- - -
+## The Recall/MRR@10 evaluation for msmarco passage dev small bm25 tuned initial retrieval
+
+__*Recall*:__
+
+```
+recall_5              	all	0.2944
+recall_10             	all	0.3916
+recall_15             	all	0.4459
+recall_20             	all	0.4842
+recall_30             	all	0.5307
+recall_100            	all	0.6701
+recall_200            	all	0.7383
+recall_500            	all	0.8116
+recall_1000           	all	0.8573
+```
+
+__*MRR @10:*__
 
 ```
 #####################
@@ -24,9 +62,23 @@ QueriesRanked: 5193
 #####################
 ```
 - - -
-## The recall/mrr@10 evaluation for msmarco doc dev bm25 tuned initial retrieval
+## The Recall/MRR@10 evaluation for msmarco doc dev bm25 tuned initial retrieval
 
-![MSMARCO Document Dev BM25 Tuned](./images/msmarco-doc-dev-bm25-tuned-eval.png)
+__*Recall*:__
+
+```
+recall_5              	all	0.4140
+recall_10             	all	0.5207
+recall_15             	all	0.5860
+recall_20             	all	0.6307
+recall_30             	all	0.6844
+recall_100            	all	0.8065
+recall_200            	all	0.8552
+recall_500            	all	0.9062
+recall_1000           	all	0.9326
+```
+
+__*MRR @10*:__
 
 ```
 #####################
@@ -34,10 +86,12 @@ MRR @10: 0.187412
 QueriesRanked: 6980
 #####################
 ```
+
 - - -
 ## File Structure
 
-_The file structure should be same as this_
+__*The file structure should be same as this*:__
+
 ```
 GPT_Ranker/
 +--- anserini/

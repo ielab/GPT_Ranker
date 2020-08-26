@@ -2,6 +2,7 @@ from helper import *
 from middleware import *
 from multiprocessing import *
 from ranker import *
+import numpy as np
 
 print("--------------------------------------------------")
 print("Loading Config/BM25 Retrieved List/Query List/Collection Dict...")
@@ -38,10 +39,11 @@ def getResFiles():
 
 if __name__ == '__main__':
     totalProcess = 8  # cpu_count()
-    chunkRes = numpy.array_split(numpy.array(RANKED_FILE_CONTENT), totalProcess)
+
+    chunkRes = np.array_split(np.array(RANKED_FILE_CONTENT), totalProcess)
     processPool = []
     for index, val in enumerate(chunkRes):
-        p = Process(target=rerankDocuments, args=(chunkRes[index], COLLECTION_DICT, CONF, SCONF, QUERY, 100, WORKER, index + 1))
+        p = Process(target=batchRerankDocuments, args=(chunkRes[index], COLLECTION_DICT, CONF, SCONF, QUERY, 1000, WORKER, index + 1))
         p.start()
         processPool.append(p)
     for p in processPool:

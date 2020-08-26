@@ -8,6 +8,7 @@ Authors : Daniel Campos <dacamp@microsoft.com>, Rutger van Haasteren <ruvanh@mic
 """
 import sys
 import statistics
+import os
 
 from collections import Counter
 
@@ -76,6 +77,21 @@ def load_candidate(path_to_candidate):
 
     with open(path_to_candidate,'r') as f:
         qid_to_ranked_candidate_passages = load_candidate_from_stream(f)
+    return qid_to_ranked_candidate_passages
+
+def load_candidate_folder(path_to_candidate):
+    """Load candidate data from a result folder.
+    Args:path_to_candidate (str): path to result folder to load.
+    Returns:qid_to_ranked_candidate_passages (dict): dictionary mapping from query_id (int) to a list of 1000 passage ids(int) ranked by relevance and importance
+    """
+    qid_to_ranked_candidate_passages = {}
+    files = os.listdir(path_to_candidate)
+    for f in files:
+        if f == '.DS_Store':
+            pass
+        else:
+            qid_to_ranked_candidate_passages.update(
+                load_candidate(path_to_candidate+'/'+f))
     return qid_to_ranked_candidate_passages
 
 
@@ -159,7 +175,12 @@ def compute_metrics_from_files(path_to_reference, path_to_candidate, perform_che
     """
 
     qids_to_relevant_passageids = load_reference(path_to_reference)
-    qids_to_ranked_candidate_passages = load_candidate(path_to_candidate)
+
+    if os.path.isdir(path_to_candidate):  # if it is a result folder
+        qids_to_ranked_candidate_passages = load_candidate_folder(
+            path_to_candidate)
+    else:
+        qids_to_ranked_candidate_passages = load_candidate(path_to_candidate)
     if perform_checks:
         allowed, message = quality_checks_qids(qids_to_relevant_passageids, qids_to_ranked_candidate_passages)
         if message != '': print(message)

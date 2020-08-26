@@ -27,7 +27,7 @@ This Repo Is For MSMARCO Document/Passage Reranking Task Using GPT-2/T5 Model
 
 ### Tools
 
-[Google Cloud TPU](https://cloud.google.com/tpu/docs/quickstart)
+- [Google Cloud TPU](https://cloud.google.com/tpu/docs/quickstart)
 
 - - -
 ## To Clone this repo

@@ -37,55 +37,35 @@ git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
 ```
 
 - - -
-## The Recall/MRR@10 evaluation for msmarco doc dev small bm25 tuned initial retrieval
+## The Recall/MRR@10 evaluation for msmarco doc dev (5193 queries)
 
-__*Recall*:__
+|| |Recall   | MRR@10   |
+| :--:| :---:  |:-----:| :-----:      |
+| T5-Base | Top 100 |
+||Top 200|
+||Top 500|
+||Top 1000|
+| GPT-2 |Top 100 |
+||Top 200|
+||Top 500|
+||Top 1000|
+|BM25 Initial Retrieval | | `recall_5	all 0.4140` <br/> `recall_10	all 0.5207`<br/>`recall_15             	all	0.5860`<br/>`recall_20             	all	0.6307`<br/>`recall_30             	all	0.6844`<br/>`recall_100            	all	0.8065`<br/>`recall_200            	all	0.8552`<br/>`recall_500            	all	0.9062`<br/>`recall_1000           	all	0.9326` | `0.278809`
 
-```
-recall_5              	all	0.2944
-recall_10             	all	0.3916
-recall_15             	all	0.4459
-recall_20             	all	0.4842
-recall_30             	all	0.5307
-recall_100            	all	0.6701
-recall_200            	all	0.7383
-recall_500            	all	0.8116
-recall_1000           	all	0.8573
-```
-
-__*MRR @10:*__
-
-```
-#####################
-MRR @100: 0.278809
-QueriesRanked: 5193
-#####################
-```
 - - -
-## The Recall/MRR@10 evaluation for msmarco passage dev bm25 tuned initial retrieval
+## The Recall/MRR@10 evaluation for msmarco passage dev small (6980 queries)
 
-__*Recall*:__
+|| |Recall   | MRR@10   |
+| :--:| :---:  |:-----:| :-----:      |
+| T5-Base | Top 100 |`recall_5                all     0.4294`<br/>`recall_10               all     0.5321`<br/>`recall_15               all     0.5778`<br/>`recall_20               all     0.6076`<br/>`recall_30               all     0.6354`<br/>`recall_100              all     0.6701`<br/>`recall_200              all     0.6701`<br/>`recall_500              all     0.6701`<br/>`recall_1000             all     0.6701` |`0.28134977`
+||Top 200|
+||Top 500|
+||Top 1000|
+| GPT-2 |Top 100 |
+||Top 200|
+||Top 500|
+||Top 1000|
+|BM25 Initial Retrieval | | `recall_5              	all	0.2944`<br/>`recall_10             	all	0.3916`<br/>`recall_15             	all	0.4459`<br/>`recall_20             	all	0.4842`<br/>`recall_30             	all	0.5307`<br/>`recall_100            	all	0.6701`<br/>`recall_200            	all	0.7383`<br/>`recall_500            	all	0.8116`<br/>`recall_1000           	all	0.8573` | `0.187412`
 
-```
-recall_5              	all	0.4140
-recall_10             	all	0.5207
-recall_15             	all	0.5860
-recall_20             	all	0.6307
-recall_30             	all	0.6844
-recall_100            	all	0.8065
-recall_200            	all	0.8552
-recall_500            	all	0.9062
-recall_1000           	all	0.9326
-```
-
-__*MRR @10*:__
-
-```
-#####################
-MRR @10: 0.187412
-QueriesRanked: 6980
-#####################
-```
 - - -
 ## The Recall/MRR@10 evaluation for msmarco passage dev t5 reranker top 100
 

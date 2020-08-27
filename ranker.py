@@ -62,7 +62,7 @@ class T5:
             score = numpy.sum(numpy.log(prob))
             return score
 
-    def batchPredict(self, documents, query):
+    def batchPredict(self, documents, query, conf):
         documents = [document + ' </s>' for document in documents]
         querys = [query] * len(documents)
         encoded_encoder_inputs = self.tokenizer(documents, padding=True, truncation=True, return_tensors="pt").to(

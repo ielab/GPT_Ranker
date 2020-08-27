@@ -68,3 +68,4 @@ __pycache__
 /data/pass_train/gpt2_formatted_pass_query_pairs.train.valid.tsv
 /data/pass_train/gpt2_space_separated_pass_query_pairs.train.txt
 /data/pass_train/c.py
+/result/pass_rerank/t5

@@ -67,32 +67,6 @@ git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
 |BM25 Initial Retrieval | | `recall_5              	all	0.2944`<br/>`recall_10             	all	0.3916`<br/>`recall_15             	all	0.4459`<br/>`recall_20             	all	0.4842`<br/>`recall_30             	all	0.5307`<br/>`recall_100            	all	0.6701`<br/>`recall_200            	all	0.7383`<br/>`recall_500            	all	0.8116`<br/>`recall_1000           	all	0.8573` | `0.187412`
 
 - - -
-## The Recall/MRR@10 evaluation for msmarco passage dev t5 reranker top 100
-
-__*Recall*:__
-
-```
-recall_5                all     0.4294
-recall_10               all     0.5321
-recall_15               all     0.5778
-recall_20               all     0.6076
-recall_30               all     0.6354
-recall_100              all     0.6701
-recall_200              all     0.6701
-recall_500              all     0.6701
-recall_1000             all     0.6701
-```
-
-__*MRR@10*:__
-
-```
-####################
-MRR @10: 0.2813497748669656
-QueriesRanked: 6980
-#####################
-```
-
-- - -
 ## File Structure
 
 __*The file structure should be same as this*:__

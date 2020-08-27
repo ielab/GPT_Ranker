@@ -36,7 +36,7 @@ if __name__ == '__main__':
             segs = linee.rstrip().split(" ")
             if segs[0] not in dic1 and segs[2] == dic3[segs[0]]:
                 dic1[segs[0]] = {
-                    segs[2]: segs[3]
+                    segs[2]: int(segs[3]) - 1
                 }
             else:
                 continue
@@ -48,7 +48,7 @@ if __name__ == '__main__':
             s = linne.rstrip().split(" ")
             if s[0] not in dic2 and s[2] == dic3[s[0]]:
                 dic2[s[0]] = {
-                    s[2]: s[3]
+                    s[2]: int(s[3]) - 1
                 }
             else:
                 continue
@@ -60,24 +60,12 @@ if __name__ == '__main__':
 
     for topic in tqdm(topics, desc="Calculating Gain..."):
         if topic in dic1 and topic in dic2:
-            gain = int(list(dic2[topic].values())[0]) - int(list(dic1[topic].values())[0])
-        elif topic in dic1 and topic not in dic2:
-            if int(list(dic1[topic].values())[0]) > topK:
-                gain = 0
-            else:
-                gain = -int(list(dic1[topic].values())[0])
-        elif topic in dic2 and topic not in dic1:
-            if int(list(dic2[topic].values())[0]) > topK:
-                gain = 0
-            else:
-                gain = int(list(dic2[topic].values())[0])
-        else:
-            gain = 0
-        gainDict[topic] = gain
+            gain = list(dic1[topic].values())[0] - list(dic2[topic].values())[0]
+            gainDict[topic] = gain
 
     orderedDict = OrderedDict(sorted(gainDict.items(), key=lambda t: t[1], reverse=True))
 
-    ind = np.arange(len(topics))
+    ind = np.arange(len(list(orderedDict.values())))
 
     fname1 = fname1.rsplit("/", 1)[1]
     fname2 = fname2.rsplit("/", 1)[1]

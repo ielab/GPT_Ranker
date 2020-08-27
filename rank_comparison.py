@@ -28,6 +28,7 @@ if __name__ == '__main__':
                 dic3[ss[0]] = ss[2]
             else:
                 continue
+    f3.close()
 
     with open(fname1, "r") as f1:
         lines1 = f1.readlines()

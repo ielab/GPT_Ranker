@@ -7,6 +7,7 @@ THIS FILE MAINLY CONTAINS FUNCTIONS THAT COMMUNICATE BETWEEN MAIN AND RETRIEVER/
 def getDocumentContentFromDict(docid, COLLECTION_DICT):
     return COLLECTION_DICT[docid]
 
+
 def getBatchDocumentContentFromDict(docids, COLLECTION_DICT):
     result = []
     for docid in docids:
@@ -20,9 +21,10 @@ def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUERY, to
     for query in tqdm(RANKED_FILE_CONTENT, desc="Process Query With Worker " + str(workerNum)):
         queryCollection = []
         if topK > len(query):
-            topK = len(query)
-
-        for i in tqdm(range(topK), desc="Process Document With Worker " + str(workerNum)):
+            temp = len(query)
+        else:
+            temp = topK
+        for i in tqdm(range(temp), desc="Process Document With Worker " + str(workerNum)):
             document = query[i]
             docid = document[1]
             qid = document[0]
@@ -37,8 +39,9 @@ def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUERY, to
         for inde, document in enumerate(sortedQueryCollection):
             line = document[0] + "\t" + document[1] + "\t" + str(inde + 1) + "\t" + str(document[3]) + "\n"
             lines.append(line)
-        with open("{}{}/{}_rerank-{}.res".format(resPath, CONF["MODEL_NAME"], CONF["MODEL_NAME"], workerNum), "a+") as f:
+        with open("{}{}/{}_rerank_{}-{}.res".format(resPath, CONF["MODEL_NAME"], CONF["MODEL_NAME"], topK, workerNum), "a+") as f:
             f.writelines(lines)
+
 
 def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUERY, topK, worker, workerNum):
     # Construct the sorted re-ranked list
@@ -48,16 +51,18 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
         queryContents = QUERY[qid]
         queryCollection = []
         if topK > len(query):
-            topK = len(query)
+            temp = len(query)
+        else:
+            temp = topK
 
         batchSize = 64
-        numIter = topK // 64 + 1
+        numIter = temp // 64 + 1
 
         for iter in tqdm(range(numIter), desc="Process Document With Worker " + str(workerNum)):
             start = iter * batchSize
             end = (iter + 1) * batchSize
-            if end > topK:
-                end = topK
+            if end > temp:
+                end = temp
             docids = query[start:end, 1]
             ranks = query[start:end, 2]
             batchDocContents = getBatchDocumentContentFromDict(docids, COLLECTION_DICT)
@@ -70,5 +75,5 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
         for inde, document in enumerate(sortedQueryCollection):
             line = document[0] + "\t" + document[1] + "\t" + str(inde + 1) + "\t" + str(document[3]) + "\n"
             lines.append(line)
-        with open("{}{}/{}_rerank-{}.res".format(resPath, CONF["MODEL_NAME"], CONF["MODEL_NAME"], workerNum), "a+") as f:
+        with open("{}{}/{}_rerank_{}-{}.res".format(resPath, CONF["MODEL_NAME"], CONF["MODEL_NAME"], topK, workerNum), "a+") as f:
             f.writelines(lines)

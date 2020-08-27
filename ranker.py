@@ -1,9 +1,11 @@
 import warnings
+
 warnings.simplefilter(action='ignore', category=FutureWarning)
 import torch
 from transformers import *
 from scipy.special import softmax
 import numpy
+
 DEVICE = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 """
@@ -60,11 +62,11 @@ class T5:
             score = numpy.sum(numpy.log(prob))
             return score
 
-
-    def batchPredict(self, documents, query, conf):
+    def batchPredict(self, documents, query):
         documents = [document + ' </s>' for document in documents]
         querys = [query] * len(documents)
-        encoded_encoder_inputs = self.tokenizer(documents, padding=True, truncation=True, return_tensors="pt").to(DEVICE)
+        encoded_encoder_inputs = self.tokenizer(documents, padding=True, truncation=True, return_tensors="pt").to(
+            DEVICE)
         encoded_decoder_inputs = self.tokenizer(querys, padding=True, truncation=True, return_tensors="pt").to(DEVICE)
         decoder_input_ids = encoded_decoder_inputs["input_ids"][0]
         scores = []

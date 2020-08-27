@@ -3,7 +3,10 @@ from middleware import *
 from multiprocessing import *
 from ranker import *
 import numpy as np
-
+try:
+    set_start_method('spawn')
+except RuntimeError:
+    print("fail to set spawn")
 print("--------------------------------------------------")
 print("Loading Config/BM25 Retrieved List/Query List/Collection Dict...")
 f = open("config.json")

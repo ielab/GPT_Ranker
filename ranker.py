@@ -75,6 +75,7 @@ class T5:
                                  labels=encoded_decoder_inputs["input_ids"],
                                  attention_mask=encoded_encoder_inputs["attention_mask"])
             batch_logits = outputs[1]
+            batch_logits = batch_logits.cpu()
             for logits in batch_logits:
                 distributions = softmax(logits.numpy(), axis=1)
                 prob = []

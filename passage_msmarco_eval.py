@@ -79,6 +79,7 @@ def load_candidate(path_to_candidate):
         qid_to_ranked_candidate_passages = load_candidate_from_stream(f)
     return qid_to_ranked_candidate_passages
 
+
 def load_candidate_folder(path_to_candidate):
     """Load candidate data from a result folder.
     Args:path_to_candidate (str): path to result folder to load.

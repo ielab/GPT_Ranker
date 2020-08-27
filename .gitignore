@@ -69,3 +69,5 @@ __pycache__
 /data/pass_train/gpt2_space_separated_pass_query_pairs.train.txt
 /data/pass_train/c.py
 /result/pass_rerank/t5
+/data/pass_rerank/bm25_tuned_trec.eval
+/data/pass_rerank/bm25_tuned_trec.res

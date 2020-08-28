@@ -57,11 +57,10 @@ git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
 
 |         |        |Recall   | MRR@10   |
 | :--:    | :---:  |:-----:  | :-----:  |
-| T5-Base |Top 100 | `recall_5 all 0.4294`<br/>`recall_10 all 0.5321`<br/>`recall_15 all 0.5778`<br/>`recall_20 all 0.6076`<br/>`recall_30 all 0.6354`<br/>`recall_100 all 0.6701`<br/>`recall_200 all 0.6701`<br/>`recall_500 all 0.6701`<br/>`recall_1000 all 0.6701` |`0.28134977`
+| T5-Base |Top 100 | `recall_5 all 0.4294`<br/>`recall_10 all 0.5321`<br/>`recall_15 all 0.5778`<br/>`recall_20 all 0.6076`<br/>`recall_30 all 0.6354`<br/>`recall_100 all 0.6701`<br/>`recall_200 all 0.6701`<br/>`recall_500 all 0.6701`<br/>`recall_1000 all 0.6701` | `0.28134977`
 |         | Top 200| `recall_5 all 0.4413`<br/>`recall_10 all 0.5496`<br/>`recall_15 all 0.6037`<br/>`recall_20 all 0.6371`<br/>`recall_30 all 0.6719`<br/>`recall_100 all 0.7333`<br/>`recall_200 all 0.7383`<br/>`recall_500 all 0.7383`<br/>`recall_1000 all 0.7383` | `0.286065970`
 |         | Top 500| `recall_5 all 0.4502`<br/>`recall_10 all 0.5630`<br/>`recall_15 all 0.6195`<br/>`recall_20 all 0.6561`<br/>`recall_30 all 0.6987`<br/>`recall_100 all 0.7812`<br/>`recall_200 all 0.8040`<br/>`recall_500 all 0.8116`<br/>`recall_1000 all 0.8116` | `0.2904781`
-|         |Top 1000| `recall_5  all     0.4553`<br/>`recall_10 all     0.5708`<br/>`recall_15 all     0.6318`<br/>`recall_20 all     0.6700`<br/>`recall_30 all     0.7148`<br/>`recall_100              all     0.8093`<br/>`recall_200              all     0.8390`<br/>`recall_500              all     0.8553`<br/>`recall_1000             all     0.8573`| ` 0.2920570`
-
+|         |Top 1000| `recall_5 all 0.4553`<br/>`recall_10 all 0.5708`<br/>`recall_15 all 0.6318`<br/>`recall_20 all 0.6700`<br/>`recall_30 all 0.7148`<br/>`recall_100 all 0.8093`<br/>`recall_200 all 0.8390`<br/>`recall_500 all 0.8553`<br/>`recall_1000 all 0.8573` | `0.2920570`
 | GPT-2   |Top 100 |
 |         |Top 200 |
 |         |Top 500 |

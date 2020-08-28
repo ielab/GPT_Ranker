@@ -1,14 +1,18 @@
 from tqdm import tqdm
+
 # Convert GPT_Ranker res file into trec res file format
-# with open("t5_rerank_100-1.res", "r") as f:
-#     lines = f.readlines()
-#     for line in lines:
-#         segs = line.rstrip().split("\t")
-#         with open("t5_rerank_100_trec.res", "a+") as ff:
-#             ff.write("{} Q0 {} {} {} {}\n".format(
-#                 segs[0], segs[1], segs[2], segs[3], "t5_100"))
+with open("result/pass_rerank/t5/t5_rerank_500-1.res", "r") as f:
+    lines = f.readlines()
+    for line in tqdm(lines):
+        segs = line.rstrip().split("\t")
+        with open("result/pass_rerank/t5/t5_rerank_500_trec.res", "a+") as ff:
+            ff.write("{} Q0 {} {} {} {}\n".format(
+                segs[0], segs[1], segs[2], segs[3], "t5_500"))
+        ff.close()
+f.close()
 
 #########################
+
 # Convert the anserini res file into trec res file format
 # with open("data/pass_rerank/run.msmarco-passage.dev.small.tsv", "r") as f:
 #     lines = f.readlines()
@@ -30,6 +34,3 @@ from tqdm import tqdm
 #         dic[ss[0]] = dic[ss[0]] - 1
 #         with open("data/pass_rerank/bm25_tuned_trec.res", "a+") as ff:
 #             ff.write(newline)
-
-#############################
-

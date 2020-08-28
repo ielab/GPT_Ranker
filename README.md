@@ -67,6 +67,23 @@ git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
 |         |Top 1000|
 |BM25 Initial Retrieval |        | `recall_5 all 0.2944`<br/>`recall_10 all 0.3916`<br/>`recall_15 all 0.4459`<br/>`recall_20 all 0.4842`<br/>`recall_30 all 0.5307`<br/>`recall_100 all 0.6701`<br/>`recall_200 all 0.7383`<br/>`recall_500 all 0.8116`<br/>`recall_1000 all 0.8573` | `0.187412`
 |MS MARCO Top 1000      |        | `recall_5 all 0.0093`<br/>`recall_10 all 0.0150`<br/>`recall_15 all 0.0196`<br/>`recall_20 all 0.0224`<br/>`recall_30 all 0.0270`<br/>`recall_100 all 0.1026`<br/>`recall_200 all 0.1641`<br/>`recall_500 all 0.3893`<br/>`recall_1000 all 0.8140` |  `0.00456946`
+
+## For example in passage task:
+
+Our model ranks this at top 1:
+```
+{"id": "7485889", "contents": "How many tables can I have in 1 Sql Azure Database. I know in Sql Server, Tables per database Limited by number of objects in a database, Database objects include objects such as tables, views, stored procedures, user-defined functions, triggers, rules, defaults, and constraints. The sum of the number of all objects in a database cannot exceed 2,147,483,647.."}
+```
+
+The actual relevant document is (we rank this at 949, BM25 rank this at 300):
+```
+{"id": "7485894", "contents": "SQL JOIN. A JOIN clause is used to combine rows from two or more tables, based on a related column between them. Let's look at a selection from the Orders table: Then, look at a selection from the Customers table: Notice that the CustomerID column in the Orders table refers to the CustomerID in the Customers table. The relationship between the two tables above is the CustomerID column. Then, we can create the following SQL statement (that contains an INNER JOIN), that selects records that have matching values in both tables: Example SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate"}
+```
+
+Comparison with BM25 model:
+
+![Rank Comparison](./images/t5_1000_vs_bm25.png)
+
 - - -
 ## File Structure
 

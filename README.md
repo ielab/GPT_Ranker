@@ -39,7 +39,7 @@ git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
 - - -
 ## The Recall/MRR@10 evaluation for msmarco doc dev (5193 queries)
 
-|| |Recall   | MRR@10   |
+|| |Recall   | MRR@100   |
 | :--:| :---:  |:-----:| :-----:      |
 | T5-Base | Top 100 |
 ||Top 200|
@@ -49,7 +49,7 @@ git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
 ||Top 200|
 ||Top 500|
 ||Top 1000|
-|BM25 Initial Retrieval | | `recall_5	all 0.4140` <br/> `recall_10	all 0.5207`<br/>`recall_15             	all	0.5860`<br/>`recall_20             	all	0.6307`<br/>`recall_30             	all	0.6844`<br/>`recall_100            	all	0.8065`<br/>`recall_200            	all	0.8552`<br/>`recall_500            	all	0.9062`<br/>`recall_1000           	all	0.9326` | `0.278809`
+|BM25 Initial Retrieval | | `recall_5                all     0.4024`<br/>`recall_10               all     0.4946`<br/>`recall_15               all     0.5640`<br/>`recall_20               all     0.6095`<br/>`recall_30               all     0.6649`<br/>`recall_100              all     0.7874`<br/>`recall_200              all     0.8373`<br/>`recall_500              all     0.8850`<br/>`recall_1000             all     0.9187` | `0.27880910`
 
 - - -
 ## The Recall/MRR@10 evaluation for msmarco passage dev small (6980 queries)

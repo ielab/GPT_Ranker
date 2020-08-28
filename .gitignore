@@ -71,3 +71,5 @@ __pycache__
 /result/pass_rerank/t5
 /data/pass_rerank/bm25_tuned_trec.eval
 /data/pass_rerank/bm25_tuned_trec.res
+data/doc_rerank/formatted_run.msmarco-doc.dev.bm25.tuned.trec.res
+data/doc_rerank/formatted_run.msmarco-doc.eval.bm25.trec.res

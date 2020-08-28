@@ -67,6 +67,8 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
             ranks = query[start:end, 2]
             batchDocContents = getBatchDocumentContentFromDict(docids, COLLECTION_DICT)
             scores = worker.batchPredict(batchDocContents, queryContents, SCONF)
+            print(scores)
+            raise Exception
             for i in range(len(scores)):
                 queryCollection.append([qid, docids[i], ranks[i], scores[i]])
 

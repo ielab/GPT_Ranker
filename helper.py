@@ -131,3 +131,7 @@ def results_to_msrun(folder_path, output):
                     topicid, docid, rank, score = line.split(" ")
                     line = "{}\t{}\t{}\t{}".format(topicid, docid, rank, score)
                     trecrun_file.write(line+"\n")
+
+
+def sliding_window(DOC_CONF, batchSize, document):
+    pass

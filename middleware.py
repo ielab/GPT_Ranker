@@ -55,7 +55,7 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
         else:
             temp = topK
 
-        batchSize = 128
+        batchSize = 64
         numIter = temp // batchSize + 1
 
         for iter in tqdm(range(numIter), desc="Process Document With Worker " + str(workerNum)):

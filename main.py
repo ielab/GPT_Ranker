@@ -33,7 +33,7 @@ print("--------------------------------------------------")
 
 
 def GPUgetResFiles():
-    topK = 200
+    topK = 500
     batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUERY, topK, WORKER, 1)
 
 

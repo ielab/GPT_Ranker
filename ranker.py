@@ -6,6 +6,7 @@ from transformers import *
 from scipy.special import softmax
 import numpy
 
+torch.manual_seed(0)
 DEVICE = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 """
@@ -14,7 +15,6 @@ THIS FILE MAINLY HANDLES THE RANKER RELATED WORK
 
 
 class T5:
-
     def __init__(self, model_dir):
         self.name = "T5"
 
@@ -22,6 +22,7 @@ class T5:
         config = T5Config.from_pretrained('t5-base')
         self.model = T5ForConditionalGeneration.from_pretrained(
             model_dir, from_tf=True, config=config)
+        self.model.eval()
         self.model.to(DEVICE)
 
     def predict(self, document, query, conf):
@@ -44,7 +45,7 @@ class T5:
                     distributions = softmax(logits.numpy(), axis=1)
                     for index, val in enumerate(decoder_input_ids[0]):
                         prob.append(distributions[index][val])
-                score = numpy.sum(numpy.log(prob))
+                score = numpy.sum(numpy.log10(prob))
                 scores.append(score)
             return max(scores)
         else:
@@ -59,7 +60,7 @@ class T5:
                 distributions = softmax(logits.numpy(), axis=1)
                 for index, val in enumerate(decoder_input_ids[0]):
                     prob.append(distributions[index][val])
-            score = numpy.sum(numpy.log(prob))
+            score = numpy.sum(numpy.log10(prob))
             return score
 
     def batchPredict(self, documents, query, conf):
@@ -81,7 +82,7 @@ class T5:
                 prob = []
                 for index, val in enumerate(decoder_input_ids):
                     prob.append(distributions[index][val])
-                score = numpy.sum(numpy.log(prob))
+                score = numpy.sum(numpy.log10(prob))
                 scores.append(score)
         return scores
 
@@ -116,7 +117,7 @@ class GPT2:
                     distributions = softmax(logits.numpy(), axis=1)
                     for index, val in enumerate(query_ids):
                         prob.append(distributions[doc_length + index][val])
-                score = numpy.sum(numpy.log(prob))
+                score = numpy.sum(numpy.log10(prob))
                 scores.append(score)
             return max(scores)
         else:
@@ -130,5 +131,5 @@ class GPT2:
                 distributions = softmax(logits.numpy(), axis=1)
                 for index, val in enumerate(query_ids):
                     prob.append(distributions[doc_length + index][val])
-            score = numpy.sum(numpy.log(prob))
+            score = numpy.sum(numpy.log10(prob))
             return score

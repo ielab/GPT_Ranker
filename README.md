@@ -70,7 +70,7 @@ git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
 
 ## For example in passage task:
 
-Our model ranks this at top 1:
+For qury "how many tables can sql server join", our model ranks this at top 1:
 ```
 {"id": "7485889", "contents": "How many tables can I have in 1 Sql Azure Database. I know in Sql Server, Tables per database Limited by number of objects in a database, Database objects include objects such as tables, views, stored procedures, user-defined functions, triggers, rules, defaults, and constraints. The sum of the number of all objects in a database cannot exceed 2,147,483,647.."}
 ```

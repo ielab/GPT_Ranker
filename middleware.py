@@ -11,7 +11,7 @@ def getDocumentContentFromDict(docid, COLLECTION_DICT):
 def getBatchDocumentContentFromDict(docids, COLLECTION_DICT):
     result = []
     for docid in docids:
-        result.append(COLLECTION_DICT[docid])
+        result.append(COLLECTION_DICT[docid].lower())
     return result
 
 
@@ -75,5 +75,5 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
         for inde, document in enumerate(sortedQueryCollection):
             line = document[0] + "\t" + document[1] + "\t" + str(inde + 1) + "\t" + str(document[3]) + "\n"
             lines.append(line)
-        with open("{}{}/{}_rerank_{}-{}.res".format(resPath, CONF["MODEL_NAME"], CONF["MODEL_NAME"], topK, workerNum), "a+") as f:
+        with open("{}{}/{}_rerank_{}-{}_lower.res".format(resPath, CONF["MODEL_NAME"], CONF["MODEL_NAME"], topK, workerNum), "a+") as f:
             f.writelines(lines)

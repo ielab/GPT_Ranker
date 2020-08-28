@@ -76,6 +76,8 @@ class T5:
                                  attention_mask=encoded_encoder_inputs["attention_mask"])
             batch_logits = outputs[1]
             batch_logits = batch_logits.cpu()
+            print(batch_logits)
+            raise Exception
             for logits in batch_logits:
                 distributions = softmax(logits.numpy(), axis=1)
                 prob = []

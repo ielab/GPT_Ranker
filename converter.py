@@ -1,13 +1,13 @@
 from tqdm import tqdm
 
 # Convert GPT_Ranker res file into trec res file format
-with open("result/pass_rerank/t5/t5_rerank_1000-1.res", "r") as f:
+with open("result/pass_rerank/t5/t5_rerank_1000-1_lower.res", "r") as f:
     lines = f.readlines()
     for line in tqdm(lines):
         segs = line.rstrip().split("\t")
-        with open("result/pass_rerank/t5/t5_rerank_1000_trec.res", "a+") as ff:
+        with open("result/pass_rerank/t5/t5_rerank_1000_lower_trec.res", "a+") as ff:
             ff.write("{} Q0 {} {} {} {}\n".format(
-                segs[0], segs[1], segs[2], segs[3], "t5_1000"))
+                segs[0], segs[1], segs[2], segs[3], "t5_1000_lower"))
         ff.close()
 f.close()
 

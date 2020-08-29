@@ -2,6 +2,7 @@
 .DS_Store
 __pycache__
 /venv
+/.vscode
 
 /lucene-index-msmarco/
 /result/doc_rerank/t5/

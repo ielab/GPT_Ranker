@@ -69,7 +69,7 @@ git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
 |                       |Top 1000<br/>(Tuned BM25)|         |          |
 |BM25 Initial Retrieval<br/>(Tuned `k1=0.82 b=0.68`) |    N/A       | `R@5 0.2944`<br/>`R@10 0.3916`<br/>`R@15 0.4459`<br/>`R@20 0.4842`<br/>`R@30 0.5307`<br/>`R@100 0.6701`<br/>`R@200 0.7383`<br/>`R@500 0.8116`<br/>`R@1000 0.8573` | `0.187412`   |
 |MS MARCO Top 1000<br/>(Provided Run)|    N/A       | `R@5 0.0093`<br/>`R@10 0.0150`<br/>`R@15 0.0196`<br/>`R@20 0.0224`<br/>`R@30 0.0270`<br/>`R@100 0.1026`<br/>`R@200 0.1641`<br/>`R@500 0.3893`<br/>`R@1000 0.8140` |  `0.00456946`|
-|docTTTTTquery Top 1000<br/>(40 Samples)|    N/A       | `R@5 0.4244`<br/>`R@10             	all	0.5411`<br/>`R@15             	all	0.6033`<br/>`R@20             	all	0.6484`<br/>`R@30             	all	0.6987`<br/>`R@100            	all	0.8190`<br/>`R@200            	all	0.8688`<br/>`R@500            	all	0.9164`<br/>`R@1000           	all	0.9471` | `0.2767497` |
+|docTTTTTquery Top 1000<br/>(40 Samples)|    N/A       | `R@5 0.4244`<br/>`R@10 0.5411`<br/>`R@15 0.6033`<br/>`R@20 0.6484`<br/>`R@30 0.6987`<br/>`R@100 0.8190`<br/>`R@200 0.8688`<br/>`R@500 0.9164`<br/>`R@1000 0.9471` | `0.2767497` |
 
 ## For example in passage task:
 

@@ -90,3 +90,6 @@ data/pass_rerank/index/lucene-index-msmarco-expanded/*.tim
 data/pass_rerank/index/lucene-index-msmarco-expanded/*.dvd
 data/pass_rerank/index/lucene-index-msmarco-expanded/*.dvm
 data/pass_rerank/index/lucene-index-msmarco-expanded/segments_1
+data/pass_rerank/run.msmarco-passage.dev.small-expanded.tsv
+data/pass_rerank/run.msmarco-passage.eval.small-expanded.tsv
+data/pass_rerank/run.msmarco-passage.dev.small-expanded.trec.res

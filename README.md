@@ -68,6 +68,7 @@ git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
 |                       |Top 1000      |         |          |
 |BM25 Initial Retrieval |    N/A       | `recall_5 all 0.2944`<br/>`recall_10 all 0.3916`<br/>`recall_15 all 0.4459`<br/>`recall_20 all 0.4842`<br/>`recall_30 all 0.5307`<br/>`recall_100 all 0.6701`<br/>`recall_200 all 0.7383`<br/>`recall_500 all 0.8116`<br/>`recall_1000 all 0.8573` | `0.187412`   |
 |MS MARCO Top 1000      |    N/A       | `recall_5 all 0.0093`<br/>`recall_10 all 0.0150`<br/>`recall_15 all 0.0196`<br/>`recall_20 all 0.0224`<br/>`recall_30 all 0.0270`<br/>`recall_100 all 0.1026`<br/>`recall_200 all 0.1641`<br/>`recall_500 all 0.3893`<br/>`recall_1000 all 0.8140` |  `0.00456946`|
+|docTTTTTquery Top 1000 |    N/A       | `recall_5 all 0.4244`<br/>`recall_10             	all	0.5411`<br/>`recall_15             	all	0.6033`<br/>`recall_20             	all	0.6484`<br/>`recall_30             	all	0.6987`<br/>`recall_100            	all	0.8190`<br/>`recall_200            	all	0.8688`<br/>`recall_500            	all	0.9164`<br/>`recall_1000           	all	0.9471` | `0.2767497` |
 
 ## For example in passage task:
 

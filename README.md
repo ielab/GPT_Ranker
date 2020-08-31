@@ -50,7 +50,7 @@ git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
 |                       |Top 500<br/>(Tuned BM25)|         |           |
 |                       |Top 1000<br/>(Tuned BM25)|         |           |
 |BM25 Initial Retrieval<br/>(Tuned `k1=3.44 b=0.87`) |  N/A   | `recall_5 all 0.4024`<br/>`recall_10 all 0.4946`<br/>`recall_15 all 0.5640`<br/>`recall_20 all 0.6095`<br/>`recall_30 all 0.6649`<br/>`recall_100 all 0.7874`<br/>`recall_200 all 0.8373`<br/>`recall_500 all 0.8850`<br/>`recall_1000 all 0.9187` | `0.27880910` |
-|MS MARCO Top 1000      |  N/A   |         |           |
+|MS MARCO Top 1000<br/>(Provided Run)|  N/A   |         |           |
 
 - - -
 ## The Recall/MRR@10 evaluation for msmarco passage dev small (6980 queries)

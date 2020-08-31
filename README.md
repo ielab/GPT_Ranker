@@ -21,7 +21,7 @@ This Repo Is For MSMARCO Document/Passage Reranking Task Using GPT-2/T5 Model
 - [OpenAI GPT-2](https://github.com/openai/gpt-2)
 - [Hugging Face Framework](https://github.com/huggingface/transformers)
 - [Google Pegasus](https://github.com/google-research/pegasus)
-    -[Pegasus Paper](https://arxiv.org/pdf/1912.08777.pdf)
+    - [Pegasus Paper](https://arxiv.org/pdf/1912.08777.pdf)
 - [Facebook BART](https://github.com/pytorch/fairseq/tree/master/examples/bart)
     - [BART Paper](https://arxiv.org/pdf/1910.13461.pdf)
 - [RoBERTa](https://pytorch.org/hub/pytorch_fairseq_roberta/)

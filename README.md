@@ -20,6 +20,12 @@ This Repo Is For MSMARCO Document/Passage Reranking Task Using GPT-2/T5 Model
 - [Google T5](https://github.com/google-research/text-to-text-transfer-transformer)
 - [OpenAI GPT-2](https://github.com/openai/gpt-2)
 - [Hugging Face Framework](https://github.com/huggingface/transformers)
+- [Google Pegasus](https://github.com/google-research/pegasus)
+    -[Pegasus Paper](https://arxiv.org/pdf/1912.08777.pdf)
+- [Facebook BART](https://github.com/pytorch/fairseq/tree/master/examples/bart)
+    - [BART Paper](https://arxiv.org/pdf/1910.13461.pdf)
+- [RoBERTa](https://pytorch.org/hub/pytorch_fairseq_roberta/)
+    - [RoBERTa Paper](https://arxiv.org/pdf/1907.11692.pdf)
 
 ### Traditional Models
 
@@ -39,15 +45,15 @@ git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
 - - -
 ## The Recall/MRR@10 evaluation for msmarco doc dev (5193 queries)
 
-|  Model Name           |  Top K |Recall   | MRR@100   |
-| :--:                  | :---:  |:-----:  | :-----:   |
-| T5-Base               | Top 100<br/>(Tuned BM25)|         |           |
+|  Model Name           |  Top K                  |Recall   | MRR@100   |
+|:---------------------:|:-----------------------:|:-------:|:---------:|
+| T5-Base               |Top 100<br/>(Tuned BM25) |         |           |
 |                       |Top 200<br/>(Tuned BM25) |         |           |
-|                       |Top 500<br/>(Tuned BM25)|         |           |
+|                       |Top 500<br/>(Tuned BM25) |         |           |
 |                       |Top 1000<br/>(Tuned BM25)|         |           |
-| GPT-2                 |Top 100<br/>(Tuned BM25)|         |           |
-|                       |Top 200<br/>(Tuned BM25)|         |           |
-|                       |Top 500<br/>(Tuned BM25)|         |           |
+| GPT-2                 |Top 100<br/>(Tuned BM25) |         |           |
+|                       |Top 200<br/>(Tuned BM25) |         |           |
+|                       |Top 500<br/>(Tuned BM25) |         |           |
 |                       |Top 1000<br/>(Tuned BM25)|         |           |
 |BM25 Initial Retrieval<br/>(Tuned `k1=3.44 b=0.87`) |  N/A   | `R@5 0.4024`<br/>`R@10 0.4946`<br/>`R@15 0.5640`<br/>`R@20 0.6095`<br/>`R@30 0.6649`<br/>`R@100 0.7874`<br/>`R@200 0.8373`<br/>`R@500 0.8850`<br/>`R@1000 0.9187` | `0.27880910` |
 |MS MARCO Top 1000<br/>(Provided Run)|  N/A   |         |           |
@@ -80,12 +86,14 @@ how many tables can sql server join
 
 Our model ranks this at top 1:
 ```
-{"id": "7485889", "contents": "How many tables can I have in 1 Sql Azure Database. I know in Sql Server, Tables per database Limited by number of objects in a database, Database objects include objects such as tables, views, stored procedures, user-defined functions, triggers, rules, defaults, and constraints. The sum of the number of objects in a database cannot exceed 2,147,483,647.."}
+id: 7485889
+contents: How many tables can I have in 1 Sql Azure Database. I know in Sql Server, Tables per database Limited by number of objects in a database, Database objects include objects such as tables, views, stored procedures, user-defined functions, triggers, rules, defaults, and constraints. The sum of the number of objects in a database cannot exceed 2,147,483,647..
 ```
 
 The actual relevant document is (we rank this at 949, BM25 rank this at 300):
 ```
-{"id": "7485894", "contents": "SQL JOIN. A JOIN clause is used to combine rows from two or more tables, based on a related column between them. Let's look at a selection from the Orders table: Then, look at a selection from the Customers table: Notice that the CustomerID column in the Orders table refers to the CustomerID in the Customers table. The relationship between the two tables above is the CustomerID column. Then, we can create the following SQL statement (that contains an INNER JOIN), that selects records that have matching values in both tables: Example SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate"}
+id: 7485894
+contents: SQL JOIN. A JOIN clause is used to combine rows from two or more tables, based on a related column between them. Let's look at a selection from the Orders table: Then, look at a selection from the Customers table: Notice that the CustomerID column in the Orders table refers to the CustomerID in the Customers table. The relationship between the two tables above is the CustomerID column. Then, we can create the following SQL statement (that contains an INNER JOIN), that selects records that have matching values in both tables: Example SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
 ```
 
 Comparison with BM25 model:

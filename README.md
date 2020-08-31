@@ -49,7 +49,7 @@ git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
 |                       |Top 200<br/>(Tuned BM25)|         |           |
 |                       |Top 500<br/>(Tuned BM25)|         |           |
 |                       |Top 1000<br/>(Tuned BM25)|         |           |
-|BM25 Initial Retrieval<br/>(Tuned `k1=3.44 b=0.87`) |  N/A   | `recall_5 all 0.4024`<br/>`recall_10 all 0.4946`<br/>`recall_15 all 0.5640`<br/>`recall_20 all 0.6095`<br/>`recall_30 all 0.6649`<br/>`recall_100 all 0.7874`<br/>`recall_200 all 0.8373`<br/>`recall_500 all 0.8850`<br/>`recall_1000 all 0.9187` | `0.27880910` |
+|BM25 Initial Retrieval<br/>(Tuned `k1=3.44 b=0.87`) |  N/A   | `R@5 0.4024`<br/>`R@10 0.4946`<br/>`R@15 0.5640`<br/>`R@20 0.6095`<br/>`R@30 0.6649`<br/>`R@100 0.7874`<br/>`R@200 0.8373`<br/>`R@500 0.8850`<br/>`R@1000 0.9187` | `0.27880910` |
 |MS MARCO Top 1000<br/>(Provided Run)|  N/A   |         |           |
 
 - - -
@@ -57,19 +57,19 @@ git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
 
 |   Model Name          |Top K         |Recall   | MRR@10   |
 | :--:                  | :---:        |:-----:  | :-----:  |
-| T5-Base               |Top 100<br/>(Tuned BM25)| `recall_5 all 0.4294`<br/>`recall_10 all 0.5321`<br/>`recall_15 all 0.5778`<br/>`recall_20 all 0.6076`<br/>`recall_30 all 0.6354`<br/>`recall_100 all 0.6701`<br/>`recall_200 all 0.6701`<br/>`recall_500 all 0.6701`<br/>`recall_1000 all 0.6701` | `0.28134977` |
-|                       | Top 200<br/>(Tuned BM25)| `recall_5 all 0.4413`<br/>`recall_10 all 0.5496`<br/>`recall_15 all 0.6037`<br/>`recall_20 all 0.6371`<br/>`recall_30 all 0.6719`<br/>`recall_100 all 0.7333`<br/>`recall_200 all 0.7383`<br/>`recall_500 all 0.7383`<br/>`recall_1000 all 0.7383` | `0.286065970`|
-|                       | Top 500<br/>(Tuned BM25)| `recall_5 all 0.4502`<br/>`recall_10 all 0.5630`<br/>`recall_15 all 0.6195`<br/>`recall_20 all 0.6561`<br/>`recall_30 all 0.6987`<br/>`recall_100 all 0.7812`<br/>`recall_200 all 0.8040`<br/>`recall_500 all 0.8116`<br/>`recall_1000 all 0.8116` | `0.2904781`  |
-|                       |Top 1000<br/>(Tuned BM25)| `recall_5 all 0.4553`<br/>`recall_10 all 0.5708`<br/>`recall_15 all 0.6318`<br/>`recall_20 all 0.6700`<br/>`recall_30 all 0.7148`<br/>`recall_100 all 0.8093`<br/>`recall_200 all 0.8390`<br/>`recall_500 all 0.8553`<br/>`recall_1000 all 0.8573` | `0.2920570`  |
-|                       |Top 1000<br/>(Tuned BM25+Lowercase Documents)| `recall_5 all 0.4546`<br/>`recall_10 all 0.5733`<br/>`recall_15 all 0.6346`<br/>`recall_20 all 0.6679`<br/>`recall_30 all 0.7133`<br/>`recall_100 all 0.8095`<br/>`recall_200 all 0.8384`<br/>`recall_500 all 0.8552`<br/>`recall_1000 all 0.8573` | `0.2945217`  |
+| T5-Base               |Top 100<br/>(Tuned BM25)| `R@5 0.4294`<br/>`R@10 0.5321`<br/>`R@15 0.5778`<br/>`R@20 0.6076`<br/>`R@30 0.6354`<br/>`R@100 0.6701`<br/>`R@200 0.6701`<br/>`R@500 0.6701`<br/>`R@1000 0.6701` | `0.28134977` |
+|                       | Top 200<br/>(Tuned BM25)| `R@5 0.4413`<br/>`R@10 0.5496`<br/>`R@15 0.6037`<br/>`R@20 0.6371`<br/>`R@30 0.6719`<br/>`R@100 0.7333`<br/>`R@200 0.7383`<br/>`R@500 0.7383`<br/>`R@1000 0.7383` | `0.286065970`|
+|                       | Top 500<br/>(Tuned BM25)| `R@5 0.4502`<br/>`R@10 0.5630`<br/>`R@15 0.6195`<br/>`R@20 0.6561`<br/>`R@30 0.6987`<br/>`R@100 0.7812`<br/>`R@200 0.8040`<br/>`R@500 0.8116`<br/>`R@1000 0.8116` | `0.2904781`  |
+|                       |Top 1000<br/>(Tuned BM25)| `R@5 0.4553`<br/>`R@10 0.5708`<br/>`R@15 0.6318`<br/>`R@20 0.6700`<br/>`R@30 0.7148`<br/>`R@100 0.8093`<br/>`R@200 0.8390`<br/>`R@500 0.8553`<br/>`R@1000 0.8573` | `0.2920570`  |
+|                       |Top 1000<br/>(Tuned BM25 +<br/>Lowercase P)| `R@5 0.4546`<br/>`R@10 0.5733`<br/>`R@15 0.6346`<br/>`R@20 0.6679`<br/>`R@30 0.7133`<br/>`R@100 0.8095`<br/>`R@200 0.8384`<br/>`R@500 0.8552`<br/>`R@1000 0.8573` | `0.2945217`  |
 |                       |Top 1000</br>(docTTTTTquery init run)|      |         |
 | GPT-2                 |Top 100<br/>(Tuned BM25)|         |          |
 |                       |Top 200<br/>(Tuned BM25)|         |          |
 |                       |Top 500<br/>(Tuned BM25)|         |          |
 |                       |Top 1000<br/>(Tuned BM25)|         |          |
-|BM25 Initial Retrieval<br/>(Tuned `k1=0.82 b=0.68`) |    N/A       | `recall_5 all 0.2944`<br/>`recall_10 all 0.3916`<br/>`recall_15 all 0.4459`<br/>`recall_20 all 0.4842`<br/>`recall_30 all 0.5307`<br/>`recall_100 all 0.6701`<br/>`recall_200 all 0.7383`<br/>`recall_500 all 0.8116`<br/>`recall_1000 all 0.8573` | `0.187412`   |
-|MS MARCO Top 1000<br/>(Provided Run)|    N/A       | `recall_5 all 0.0093`<br/>`recall_10 all 0.0150`<br/>`recall_15 all 0.0196`<br/>`recall_20 all 0.0224`<br/>`recall_30 all 0.0270`<br/>`recall_100 all 0.1026`<br/>`recall_200 all 0.1641`<br/>`recall_500 all 0.3893`<br/>`recall_1000 all 0.8140` |  `0.00456946`|
-|docTTTTTquery Top 1000<br/>(40 Samples)|    N/A       | `recall_5 all 0.4244`<br/>`recall_10             	all	0.5411`<br/>`recall_15             	all	0.6033`<br/>`recall_20             	all	0.6484`<br/>`recall_30             	all	0.6987`<br/>`recall_100            	all	0.8190`<br/>`recall_200            	all	0.8688`<br/>`recall_500            	all	0.9164`<br/>`recall_1000           	all	0.9471` | `0.2767497` |
+|BM25 Initial Retrieval<br/>(Tuned `k1=0.82 b=0.68`) |    N/A       | `R@5 0.2944`<br/>`R@10 0.3916`<br/>`R@15 0.4459`<br/>`R@20 0.4842`<br/>`R@30 0.5307`<br/>`R@100 0.6701`<br/>`R@200 0.7383`<br/>`R@500 0.8116`<br/>`R@1000 0.8573` | `0.187412`   |
+|MS MARCO Top 1000<br/>(Provided Run)|    N/A       | `R@5 0.0093`<br/>`R@10 0.0150`<br/>`R@15 0.0196`<br/>`R@20 0.0224`<br/>`R@30 0.0270`<br/>`R@100 0.1026`<br/>`R@200 0.1641`<br/>`R@500 0.3893`<br/>`R@1000 0.8140` |  `0.00456946`|
+|docTTTTTquery Top 1000<br/>(40 Samples)|    N/A       | `R@5 0.4244`<br/>`R@10             	all	0.5411`<br/>`R@15             	all	0.6033`<br/>`R@20             	all	0.6484`<br/>`R@30             	all	0.6987`<br/>`R@100            	all	0.8190`<br/>`R@200            	all	0.8688`<br/>`R@500            	all	0.9164`<br/>`R@1000           	all	0.9471` | `0.2767497` |
 
 ## For example in passage task:
 
@@ -80,7 +80,7 @@ how many tables can sql server join
 
 Our model ranks this at top 1:
 ```
-{"id": "7485889", "contents": "How many tables can I have in 1 Sql Azure Database. I know in Sql Server, Tables per database Limited by number of objects in a database, Database objects include objects such as tables, views, stored procedures, user-defined functions, triggers, rules, defaults, and constraints. The sum of the number of all objects in a database cannot exceed 2,147,483,647.."}
+{"id": "7485889", "contents": "How many tables can I have in 1 Sql Azure Database. I know in Sql Server, Tables per database Limited by number of objects in a database, Database objects include objects such as tables, views, stored procedures, user-defined functions, triggers, rules, defaults, and constraints. The sum of the number of objects in a database cannot exceed 2,147,483,647.."}
 ```
 
 The actual relevant document is (we rank this at 949, BM25 rank this at 300):

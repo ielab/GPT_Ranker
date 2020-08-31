@@ -80,3 +80,13 @@ passTTTTTquery/
 data/pass_rerank/index/lucene-index-msmarco-expanded/*.fdt
 data/pass_rerank/index/lucene-index-msmarco-expanded/*.fdx
 data/pass_rerank/index/lucene-index-msmarco-expanded/*.lock
+data/pass_rerank/index/lucene-index-msmarco-expanded/*.doc
+data/pass_rerank/index/lucene-index-msmarco-expanded/*.si
+data/pass_rerank/index/lucene-index-msmarco-expanded/*.fnm
+data/pass_rerank/index/lucene-index-msmarco-expanded/*.nvd
+data/pass_rerank/index/lucene-index-msmarco-expanded/*.nvm
+data/pass_rerank/index/lucene-index-msmarco-expanded/*.tip
+data/pass_rerank/index/lucene-index-msmarco-expanded/*.tim
+data/pass_rerank/index/lucene-index-msmarco-expanded/*.dvd
+data/pass_rerank/index/lucene-index-msmarco-expanded/*.dvm
+data/pass_rerank/index/lucene-index-msmarco-expanded/segments_1

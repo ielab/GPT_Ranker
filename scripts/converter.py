@@ -35,12 +35,12 @@ from tqdm import tqdm
 #         with open("data/pass_rerank/bm25_tuned_trec.res", "a+") as ff:
 #             ff.write(newline)
 
-with open("/Users/hangli/ielab/GPT_Ranker/data/pass_rerank/run.msmarco-passage.dev.small.tsv", "r") as f:
+with open("../result/pass_rerank/t5/t5_rerank_1000-1-docTquery.res", "r") as f:
     lines = f.readlines()
     for line in tqdm(lines):
         segs = line.rstrip().split("\t")
-        with open("/Users/hangli/ielab/GPT_Ranker/data/pass_rerank/run.msmarco-passage.dev.small.trec.res", "a+") as ff:
+        with open("../result/pass_rerank/t5/t5_rerank_1000-1-docTquery.trec.res", "a+") as ff:
             ff.write("{} Q0 {} {} {} {}\n".format(
-                segs[0], segs[1], segs[2], -int(segs[2]), "bm25_tuned"))
+                segs[0], segs[1], segs[2], segs[3], "t5_docTquery"))
         ff.close()
 f.close()

@@ -1,5 +1,6 @@
 from tqdm import tqdm
 from sentence_splitter import SentenceSplitter
+from itertools import chain
 
 """
 THIS FILE MAINLY CONTAINS FUNCTIONS THAT COMMUNICATE BETWEEN MAIN AND RETRIEVER/WORKER
@@ -95,11 +96,38 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
         else:
 
             docids = query[:temp, 1]
-
             documentInSentences = getBatchSplittedDocumentSentences(docids, COLLECTION_DICT)
-            # TODO: Use batch 128
+            fullSentenceList = list(chain.from_iterable(documentInSentences))
+            CHUNK_SIZE = SCONF["CHUNK_SIZE"]
+
+            chunkedSentenceList = [fullSentenceList[i:i + CHUNK_SIZE] for i in range(0, len(fullSentenceList), CHUNK_SIZE)]
+            positionList = [{} for _ in range(len(chunkedSentenceList))]
+
+            index = 0
+
             for ind, sentences in enumerate(documentInSentences):
+                total = sum(positionList[index].values())
+                if len(sentences) + total < CHUNK_SIZE:
+                    positionList[index][docids[ind]] = len(sentences)
+                elif len(sentences) + total == CHUNK_SIZE:
+                    positionList[index][docids[ind]] = len(sentences)
+                    index += 1
+                else:
+                    need = CHUNK_SIZE - total
+                    rest = total + len(sentences) - CHUNK_SIZE
+                    positionList[index][docids[ind]] = need
+                    index += 1
+                    positionList[index][docids[ind]] = rest
+
+            for ind, sentences in enumerate(chunkedSentenceList):
+                count = 0
                 scores = worker.batchPredict(sentences, queryContents, SCONF)
-                for i in range(len(scores)):
+                innerCount = 0
+                positionItem = positionList[ind]
+                positionKeys = positionItem.keys()
+                positionValues = positionItem.values()
+                for i in range(positionValues[innerCount]):
                     with open("result/doc_rerank/t5/sentence_scoring/t5_doc_sentence_scoring.txt", "a+") as f:
-                        f.write("{}\t{}_{}\t{}\n".format(qid, docids[ind], i, scores[i]))
+                        f.write("{}\t{}_{}\t{}\n".format(qid, positionKeys[innerCount], i, scores[count]))
+                        count += 1
+                innerCount += 1

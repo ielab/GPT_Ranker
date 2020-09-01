@@ -1,6 +1,6 @@
 from tqdm import tqdm
 from sentence_splitter import SentenceSplitter
-from itertools import chain
+# from itertools import chain
 
 """
 THIS FILE MAINLY CONTAINS FUNCTIONS THAT COMMUNICATE BETWEEN MAIN AND RETRIEVER/WORKER
@@ -24,7 +24,8 @@ def getBatchSplittedDocumentSentences(docids, COLLECTION_DICT):
         splitter = SentenceSplitter(language='en')
         document = COLLECTION_DICT[docid]
         sentences = splitter.split(text=document)
-        result.append(sentences)
+        for sentence in sentences:
+            result.append((docid, sentence))
     return result
 
 
@@ -62,15 +63,17 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
     for query in tqdm(RANKED_FILE_CONTENT, desc="Process Query With Worker " + str(workerNum)):
         qid = query[0][0]
         queryContents = QUERY[qid]
-        queryCollection = []
+
+        batchSize = 64
+
         if topK > len(query):
             temp = len(query)
         else:
             temp = topK
 
         if CONF["METHOD"] == "PASS":
+            queryCollection = []
 
-            batchSize = 64
             numIter = temp // batchSize + 1
 
             for iter in tqdm(range(numIter), desc="Process Document With Worker " + str(workerNum)):
@@ -96,38 +99,63 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
         else:
 
             docids = query[:temp, 1]
-            documentInSentences = getBatchSplittedDocumentSentences(docids, COLLECTION_DICT)
-            fullSentenceList = list(chain.from_iterable(documentInSentences))
-            CHUNK_SIZE = SCONF["CHUNK_SIZE"]
+            docid_sentence = getBatchSplittedDocumentSentences(docids, COLLECTION_DICT)
+            num_sentences = len(docid_sentence)
+            numIter = num_sentences // batchSize + 1
 
-            chunkedSentenceList = [fullSentenceList[i:i + CHUNK_SIZE] for i in range(0, len(fullSentenceList), CHUNK_SIZE)]
-            positionList = [{} for _ in range(len(chunkedSentenceList))]
+            temp_docids = []
+            temp_socres = []
+            for iter in tqdm(range(numIter), desc="Process Document With Worker " + str(workerNum)):
+                start = iter * batchSize
+                end = (iter + 1) * batchSize
+                if end > num_sentences:
+                    end = num_sentences
 
-            index = 0
+                batchSentences = []
+                for docid, sentence in docid_sentence[start:end]:
+                    temp_docids.append(docid)
+                    batchSentences.append(batchSentences)
 
-            for ind, sentences in enumerate(documentInSentences):
-                total = sum(positionList[index].values())
-                if len(sentences) + total < CHUNK_SIZE:
-                    positionList[index][docids[ind]] = len(sentences)
-                elif len(sentences) + total == CHUNK_SIZE:
-                    positionList[index][docids[ind]] = len(sentences)
-                    index += 1
-                else:
-                    need = CHUNK_SIZE - total
-                    rest = total + len(sentences) - CHUNK_SIZE
-                    positionList[index][docids[ind]] = need
-                    index += 1
-                    positionList[index][docids[ind]] = rest
+                scores = worker.batchPredict(batchSentences, queryContents, SCONF)
+                temp_socres.extend(scores)
 
-            for ind, sentences in enumerate(chunkedSentenceList):
-                count = 0
-                scores = worker.batchPredict(sentences, queryContents, SCONF)
-                innerCount = 0
-                positionItem = positionList[ind]
-                positionKeys = positionItem.keys()
-                positionValues = positionItem.values()
-                for i in range(positionValues[innerCount]):
-                    with open("result/doc_rerank/t5/sentence_scoring/t5_doc_sentence_scoring.txt", "a+") as f:
-                        f.write("{}\t{}_{}\t{}\n".format(qid, positionKeys[innerCount], i, scores[count]))
-                        count += 1
-                innerCount += 1
+
+            with open("result/doc_rerank/t5/sentence_scoring/t5_doc_sentence_scoring.txt", "a+") as f:
+                for i in range(len(temp_docids)):
+                    f.write("{}\t{}\t{}\n".format(qid, temp_docids[i], scores[i]))
+
+
+            # fullSentenceList = list(chain.from_iterable(documentInSentences))
+            # CHUNK_SIZE = SCONF["CHUNK_SIZE"]
+            #
+            # chunkedSentenceList = [fullSentenceList[i:i + CHUNK_SIZE] for i in range(0, len(fullSentenceList), CHUNK_SIZE)]
+            # positionList = [{} for _ in range(len(chunkedSentenceList))]
+            #
+            # index = 0
+            #
+            # for ind, sentences in enumerate(documentInSentences):
+            #     total = sum(positionList[index].values())
+            #     if len(sentences) + total < CHUNK_SIZE:
+            #         positionList[index][docids[ind]] = len(sentences)
+            #     elif len(sentences) + total == CHUNK_SIZE:
+            #         positionList[index][docids[ind]] = len(sentences)
+            #         index += 1
+            #     else:
+            #         need = CHUNK_SIZE - total
+            #         rest = total + len(sentences) - CHUNK_SIZE
+            #         positionList[index][docids[ind]] = need
+            #         index += 1
+            #         positionList[index][docids[ind]] = rest
+            #
+            # for ind, sentences in enumerate(chunkedSentenceList):
+            #     count = 0
+            #     scores = worker.batchPredict(sentences, queryContents, SCONF)
+            #     innerCount = 0
+            #     positionItem = positionList[ind]
+            #     positionKeys = positionItem.keys()
+            #     positionValues = positionItem.values()
+            #     for i in range(positionValues[innerCount]):
+            #         with open("result/doc_rerank/t5/sentence_scoring/t5_doc_sentence_scoring.txt", "a+") as f:
+            #             f.write("{}\t{}_{}\t{}\n".format(qid, positionKeys[innerCount], i, scores[count]))
+            #             count += 1
+            #     innerCount += 1

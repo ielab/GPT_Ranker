@@ -2,7 +2,6 @@ import json
 import os
 import numpy as np
 from tqdm import tqdm
-from sentence_splitter import SentenceSplitter
 
 """
 THIS FILE MAINLY PROVIDES HELPER FUNCTIONS TO OTHER FUNCTIONS
@@ -132,10 +131,3 @@ def results_to_msrun(folder_path, output):
                     topicid, docid, rank, score = line.split(" ")
                     line = "{}\t{}\t{}\t{}".format(topicid, docid, rank, score)
                     trecrun_file.write(line+"\n")
-
-
-def document_splitter(DOC_CONF, batchSize, document):
-    splitter = SentenceSplitter(language='en')
-    sentences = splitter.split(text=document)
-    CHUNK_SIZE = DOC_CONF["CHUNK_SIZE"]
-    return sentences

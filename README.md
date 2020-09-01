@@ -123,7 +123,7 @@ contents: Health related question in topics Psychology .We found some answers as
 
 Comparison with BM25 model:
 
-![Rank Comparison](./images/t5_1000_vs_bm25.png)
+![Rank Comparison](./images/t5_1000_docTquery_vs_bm25_tuned.png)
 
 - - -
 ## File Structure

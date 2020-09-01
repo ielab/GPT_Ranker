@@ -3,6 +3,7 @@
 __pycache__
 /venv
 /.vscode
+/analysis
 
 /lucene-index-msmarco/
 /result/doc_rerank/t5/

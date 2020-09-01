@@ -95,6 +95,31 @@ The actual relevant document is (we rank this at 949, BM25 rank this at 300):
 id: 7485894
 contents: SQL JOIN. A JOIN clause is used to combine rows from two or more tables, based on a related column between them. Let's look at a selection from the Orders table: Then, look at a selection from the Customers table: Notice that the CustomerID column in the Orders table refers to the CustomerID in the Customers table. The relationship between the two tables above is the CustomerID column. Then, we can create the following SQL statement (that contains an INNER JOIN), that selects records that have matching values in both tables: Example SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
 ```
+- - -
+
+For query:
+```
+what does it mean when you dream about babies
+```
+
+Our model ranks this at top 1:
+```
+id: 6680536
+contents: A baby in general. Dreams that include babies are positive signs. Dreaming about interacting with a baby or simply seeing a baby in a dream can mean that pleasant surprises and fortuitous occurrences are about to occur in your life. This dream doesn't specify what, but something unexpectedly good is on your horizon.
+```
+
+The actual relevant document is (we rank this at 2, BM25 rank this at 993):
+```
+id: 7551052
+contents: To see a baby in your dream signifies innocence, warmth and new beginnings. Babies symbolize something in your own inner nature that is pure, vulnerable, helpless and/or uncorrupted. If you dream that the baby is smiling at you, then it suggests that you are experiencing pure joy.
+```
+
+BM25 ranks this at top 1 (we rank this at 47):
+```
+id: 3347686
+contents: Health related question in topics Psychology .We found some answers as below for this question What does it mean when you dream about somebody having a baby,you can compare them. When you dream of someone having a baby, it means new beginnings. It also means hidden potential related to you is being released. [ Source: http://www.chacha.com/question/what-does-it-mean-when-you-dream-about-somebody-having-a-baby ] More Answers to What does it mean when you dream about somebody having a baby.
+```
+- - -
 
 Comparison with BM25 model:
 

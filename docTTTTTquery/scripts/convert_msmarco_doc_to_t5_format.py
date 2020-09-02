@@ -44,8 +44,8 @@ def sentence_spliter(corpus_paths, workerNum):
             # open(args.output_segment_doc_ids_path, 'w') as fout_segment_doc_ids:
 
             for doc_id, (doc_title, doc_text) in tqdm(corpus.items(), total=len(corpus)):
-                doc = nlp(doc_text)
-                # doc = nlp(doc_text[:10000])
+                # doc = nlp(doc_text)
+                doc = nlp(doc_text[:1000000])
                 sentences = [sent.string.strip() for sent in doc.sents]
                 for each in sentences:
                     each = re.sub(r'^#*', '', each)

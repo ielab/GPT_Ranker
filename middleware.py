@@ -65,7 +65,7 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
         queryContents = QUERY[qid]
         batchSize = 128
 
-        encoded_decoder_inputs = worker.tokenize([queryContents] * len(batchSize))
+        encoded_decoder_inputs = worker.tokenize([queryContents] * batchSize)
 
 
         if topK > len(query):
@@ -83,7 +83,7 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
                 end = (iter + 1) * batchSize
                 if end > temp:
                     end = temp
-                    encoded_decoder_inputs = worker.tokenize([queryContents] * len(end - start))
+                    encoded_decoder_inputs = worker.tokenize([queryContents] * (end - start))
                 docids = query[start:end, 1]
                 ranks = query[start:end, 2]
                 batchDocContents = getBatchDocumentContentFromDict(docids, COLLECTION_DICT)
@@ -114,7 +114,7 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
                 end = (iter + 1) * batchSize
                 if end > num_sentences:
                     end = num_sentences
-                    encoded_decoder_inputs = worker.tokenize([queryContents] * len(end-start))
+                    encoded_decoder_inputs = worker.tokenize([queryContents] * (end-start))
 
 
                 batchSentences = []

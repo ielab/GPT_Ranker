@@ -24,6 +24,7 @@ class T5:
             model_dir, from_tf=True, config=config)
         self.model.eval()
         self.model.to(DEVICE)
+        self.softmax = torch.nn.Softmax(dim=1).to(DEVICE)
 
     def predict(self, document, query, conf):
         if "CHUNK_SIZE" in conf:
@@ -76,9 +77,11 @@ class T5:
                                  labels=encoded_decoder_inputs["input_ids"],
                                  attention_mask=encoded_encoder_inputs["attention_mask"])
             batch_logits = outputs[1]
-            batch_logits = batch_logits.cpu()
+            # batch_logits = batch_logits.cpu()
+            batch_logits = batch_logits
             for logits in batch_logits:
-                distributions = softmax(logits.numpy(), axis=1)
+                # distributions = softmax(logits.numpy(), axis=1)
+                distributions = self.softmax(logits)
                 prob = []
                 for index, val in enumerate(decoder_input_ids):
                     prob.append(distributions[index][val])

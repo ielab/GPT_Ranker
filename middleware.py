@@ -63,8 +63,10 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
     for query in tqdm(RANKED_FILE_CONTENT, desc="Process Query With Worker " + str(workerNum)):
         qid = query[0][0]
         queryContents = QUERY[qid]
-
         batchSize = 128
+
+        encoded_decoder_inputs = worker.tokenize([queryContents] * len(batchSize))
+
 
         if topK > len(query):
             temp = len(query)
@@ -81,10 +83,11 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
                 end = (iter + 1) * batchSize
                 if end > temp:
                     end = temp
+                    encoded_decoder_inputs = worker.tokenize([queryContents] * len(end - start))
                 docids = query[start:end, 1]
                 ranks = query[start:end, 2]
                 batchDocContents = getBatchDocumentContentFromDict(docids, COLLECTION_DICT)
-                scores = worker.batchPredict(batchDocContents, queryContents, SCONF)
+                scores = worker.batchPredict(batchDocContents, encoded_decoder_inputs, SCONF)
                 for i in range(len(scores)):
                     queryCollection.append([qid, docids[i], ranks[i], scores[i]])
 
@@ -103,6 +106,7 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
             num_sentences = len(docid_sentence)
             numIter = num_sentences // batchSize + 1
 
+
             temp_docids = []
             temp_socres = []
             for iter in tqdm(range(numIter), desc="Process Document With Worker " + str(workerNum)):
@@ -110,13 +114,15 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
                 end = (iter + 1) * batchSize
                 if end > num_sentences:
                     end = num_sentences
+                    encoded_decoder_inputs = worker.tokenize([queryContents] * len(end-start))
+
 
                 batchSentences = []
                 for docid, sentence in docid_sentence[start:end]:
                     temp_docids.append(docid)
                     batchSentences.append(sentence)
 
-                scores = worker.batchPredict(batchSentences, queryContents, SCONF)
+                scores = worker.batchPredict(batchSentences, encoded_decoder_inputs, SCONF)
                 temp_socres.extend(scores)
 
             with open("result/doc_rerank/t5/sentence_scoring/t5_doc_sentence_scoring.txt", "a+") as f:

@@ -64,12 +64,16 @@ class T5:
             score = numpy.sum(numpy.log10(prob))
             return score
 
-    def batchPredict(self, documents, query, conf):
+    def tokenize(self, text):
+        encoded_inputs = self.tokenizer(text, padding=True, truncation=True, return_tensors="pt").to(DEVICE)
+        return encoded_inputs
+
+    def batchPredict(self, documents, encoded_decoder_inputs, conf):
         documents = [document + ' </s>' for document in documents]
-        querys = [query] * len(documents)
+        # querys = [query] * len(documents)
         encoded_encoder_inputs = self.tokenizer(documents, padding=True, truncation=True, return_tensors="pt").to(
             DEVICE)
-        encoded_decoder_inputs = self.tokenizer(querys, padding=True, truncation=True, return_tensors="pt").to(DEVICE)
+        # encoded_decoder_inputs = self.tokenizer(querys, padding=True, truncation=True, return_tensors="pt").to(DEVICE)
         decoder_input_ids = encoded_decoder_inputs["input_ids"][0]
         scores = []
         with torch.no_grad():

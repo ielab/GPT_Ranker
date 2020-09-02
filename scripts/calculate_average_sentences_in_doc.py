@@ -40,8 +40,8 @@ print("Longest Document Has " + str(longestDocument) + " Sentences")
 print("Shortest Document Has " + str(shortestDocument) + " Sentences")
 print("Average " + str(totalSentence/totalDocument) + " Sentences Per Document")
 
-# Total Documents: 8841823
-# Total Sentences: 28545938
-# Longest Document Has 87 Sentences
-# Shortest Document Has 1 Sentences
-# Average 3.228512717343471 Sentences Per Document
+# Total Documents: 3213835
+# Total Sentences: 168483433
+# Longest Document Has 26680 Sentences
+# Shortest Document Has 0 Sentences
+# Average 52.424419112991174 Sentences Per Document

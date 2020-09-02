@@ -119,11 +119,9 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
                 scores = worker.batchPredict(batchSentences, queryContents, SCONF)
                 temp_socres.extend(scores)
 
-
             with open("result/doc_rerank/t5/sentence_scoring/t5_doc_sentence_scoring.txt", "a+") as f:
                 for i in range(len(temp_docids)):
                     f.write("{}\t{}\t{}\n".format(qid, temp_docids[i], temp_socres[i]))
-
 
             # fullSentenceList = list(chain.from_iterable(documentInSentences))
             # CHUNK_SIZE = SCONF["CHUNK_SIZE"]

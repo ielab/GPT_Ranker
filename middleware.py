@@ -114,7 +114,7 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
                 batchSentences = []
                 for docid, sentence in docid_sentence[start:end]:
                     temp_docids.append(docid)
-                    batchSentences.append(batchSentences)
+                    batchSentences.append(sentence)
 
                 scores = worker.batchPredict(batchSentences, queryContents, SCONF)
                 temp_socres.extend(scores)

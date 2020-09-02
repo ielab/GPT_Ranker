@@ -39,7 +39,7 @@ def GPUgetResFiles():
 
 if __name__ == '__main__':
     if CONF["DEVICE"] == "CPU":
-        totalProcess = 8  # cpu_count()
+        totalProcess = 1  # cpu_count()
 
         chunkRes = np.array_split(np.array(RANKED_FILE_CONTENT), totalProcess)
         processPool = []

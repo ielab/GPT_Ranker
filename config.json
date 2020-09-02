@@ -3,7 +3,7 @@
   "MODEL_NAME": "t5",
   "T5_MODEL": "model/t5-base/model.ckpt-1004000",
   "GPT2_MODEL": "model/gpt-2/",
-  "DEVICE": "CPU",
+  "DEVICE": "GPU",
   "DOC_CONF": {
     "CHUNK_SIZE": 128,
     "INDEX": "data/doc_rerank/index/lucene-index.msmarco-doc.pos+docvectors+rawdocs",

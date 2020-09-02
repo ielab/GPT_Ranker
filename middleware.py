@@ -64,7 +64,7 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
         qid = query[0][0]
         queryContents = QUERY[qid]
 
-        batchSize = 64
+        batchSize = 128
 
         if topK > len(query):
             temp = len(query)

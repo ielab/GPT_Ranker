@@ -12,7 +12,7 @@ f.close()
 if CONF["METHOD"] == "PASS":
     SCONF = CONF["PASS_CONF"]
     RANKED_FILE_CONTENT = readRankFile(CONF, SCONF)
-    QUERY = readQueryFile(SCONF)
+    QUERY = readQueryFile(SCONF["QUERY"])
     COLLECTION_DICT = readCollectionFile(SCONF, RANKED_FILE_CONTENT)
     if CONF["MODEL_NAME"] == "gpt2":
         WORKER = GPT2()
@@ -22,7 +22,7 @@ if CONF["METHOD"] == "PASS":
 else:
     SCONF = CONF["DOC_CONF"]
     RANKED_FILE_CONTENT = readRankFile(CONF, SCONF)
-    QUERY = readQueryFile(SCONF)
+    QUERY = readQueryFile(SCONF["QUERY"])
     COLLECTION_DICT = readCollectionFile(SCONF, RANKED_FILE_CONTENT)
     if CONF["MODEL_NAME"] == "gpt2":
         WORKER = GPT2()

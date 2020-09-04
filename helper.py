@@ -48,11 +48,11 @@ def readRankFile(CONF, SCONF):
     return fullCollection
 
 
-def readQueryFile(CONF):
+def readQueryFile(path):
     # Read the query file into memory and construct a dictionary
     queryCollection = []
     queryDict = {}
-    queryFilePath = CONF["QUERY"]
+    queryFilePath = path
 
     with open(queryFilePath, 'r') as f:
         contents = f.readlines()

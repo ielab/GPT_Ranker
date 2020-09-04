@@ -24,7 +24,7 @@ class T5:
             model_dir, from_tf=True, config=config)
         self.model.eval()
         self.model.to(DEVICE)
-        self.softmax = torch.nn.Softmax(dim=1).to(DEVICE)
+        self.softmax = torch.nn.Softmax(dim=-1).to(DEVICE)
 
     def predict(self, document, query, conf):
         if "CHUNK_SIZE" in conf:
@@ -68,30 +68,36 @@ class T5:
         encoded_inputs = self.tokenizer(text, padding=True, truncation=True, return_tensors="pt").to(DEVICE)
         return encoded_inputs
 
-    def batchPredict(self, documents, encoded_decoder_inputs, conf):
+    def batchPredict(self, documents, decoder_inputs, conf):
         documents = [document + ' </s>' for document in documents]
         # querys = [query] * len(documents)
-        encoded_encoder_inputs = self.tokenizer(documents, padding=True, truncation=True, return_tensors="pt").to(
+        encoder_inputs = self.tokenizer(documents, padding=True, truncation=True, return_tensors="pt").to(
             DEVICE)
         # encoded_decoder_inputs = self.tokenizer(querys, padding=True, truncation=True, return_tensors="pt").to(DEVICE)
-        decoder_input_ids = encoded_decoder_inputs["input_ids"][0]
-        scores = []
+        decoder_input_ids = decoder_inputs["input_ids"],
+        # scores = []
         with torch.no_grad():
-            outputs = self.model(input_ids=encoded_encoder_inputs["input_ids"],
-                                 labels=encoded_decoder_inputs["input_ids"],
-                                 attention_mask=encoded_encoder_inputs["attention_mask"])
-            batch_logits = outputs[1]
+            outputs = self.model(input_ids=encoder_inputs["input_ids"],
+                                 labels=decoder_input_ids,
+                                 attention_mask=encoder_inputs["attention_mask"])
+            batch_logits = outputs[1]  # shape(batch_size, decoder_dim, num_tokens)
             # batch_logits = batch_logits.cpu()
 
-            for logits in batch_logits:
-                # distributions = softmax(logits.numpy(), axis=1)
-                distributions = self.softmax(logits)
-                prob = []
-                for index, val in enumerate(decoder_input_ids):
-                    prob.append(distributions[index][val])
-                score = numpy.sum(numpy.log10(prob))
-                scores.append(score)
-        return scores
+            distributions = softmax(batch_logits)  # shape(batch_size, decoder_dim, num_tokens)
+            decoder_input_ids = decoder_input_ids.unsqueeze(-1)  # shape(batch_size, decoder_dim, 1)
+            batch_probs = torch.gather(distributions, 2, decoder_input_ids).squeeze(-1)  # shape(batch_size, decoder_dim)
+            masked_log_probs = torch.log10(batch_probs)  # shape(batch_size, decoder_dim)
+            scores = torch.sum(masked_log_probs, 1)  # shape(batch_size)
+
+            # for logits in batch_logits:
+            #     # distributions = softmax(logits.numpy(), axis=1)
+            #     distributions = self.softmax(logits)
+            #     prob = []
+            #     for index, val in enumerate(decoder_input_ids):
+            #         prob.append(distributions[index][val])
+            #     score = numpy.sum(numpy.log10(prob))
+            #     scores.append(score)
+        return scores.tolist()
 
 
 class GPT2:

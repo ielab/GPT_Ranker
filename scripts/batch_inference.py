@@ -1,8 +1,8 @@
-from helper import readQueryFile
 import linecache
 from torch.utils.data import Dataset, DataLoader
 import torch
 from transformers import T5Tokenizer, T5Config, T5ForConditionalGeneration
+import json
 from tqdm import tqdm
 
 torch.manual_seed(0)
@@ -35,6 +35,25 @@ def collate_fn(batch):
         contents.append(content)
 
     return querys, contents
+
+
+def readQueryFile(path):
+    # Read the query file into memory and construct a dictionary
+    queryCollection = []
+    queryDict = {}
+    queryFilePath = path
+
+    with open(queryFilePath, 'r') as f:
+        contents = f.readlines()
+
+    for line in contents:
+        queryContent = json.loads(line)
+        queryCollection.append(queryContent)
+
+    for query in queryCollection:
+        queryDict[query["id"]] = query["contents"]
+
+    return queryDict
 
 
 def main():

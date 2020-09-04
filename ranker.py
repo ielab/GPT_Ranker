@@ -2,7 +2,7 @@ import warnings
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 import torch
-from transformers import *
+from transformers import T5Tokenizer, T5Config, T5ForConditionalGeneration, GPT2Tokenizer, GPT2LMHeadModel
 from scipy.special import softmax
 import numpy
 
@@ -82,7 +82,7 @@ class T5:
                                  attention_mask=encoded_encoder_inputs["attention_mask"])
             batch_logits = outputs[1]
             # batch_logits = batch_logits.cpu()
-            batch_logits = batch_logits
+
             for logits in batch_logits:
                 # distributions = softmax(logits.numpy(), axis=1)
                 distributions = self.softmax(logits)

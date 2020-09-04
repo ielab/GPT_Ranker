@@ -34,7 +34,8 @@ def getBatchSplittedDocumentSentences(docids, COLLECTION_DICT):
 
 
 def getNLPbatchSlidingWindows(docids, COLLECTION_DICT):
-    result = []
+    windows = []
+    ids = []
     for docid in docids:
         doc_text = COLLECTION_DICT[docid]
         doc = NLP(doc_text[:1000000])
@@ -43,10 +44,11 @@ def getNLPbatchSlidingWindows(docids, COLLECTION_DICT):
             segment = ' '.join(sentences[i:i + 10])
             segment = re.sub(r'^#*', '', segment)
             segment += ' </s>'
-            result.append((docid, segment))
+            windows.append(segment)
+            ids.append(docid)
             if i + 10 >= len(sentences):
                 break
-    return result
+    return windows, ids
 
 
 
@@ -123,32 +125,28 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
         else:
 
             docids = query[:temp, 1]
-            docid_sentence = getNLPbatchSlidingWindows(docids, COLLECTION_DICT)
-            num_sentences = len(docid_sentence)
+            windows, ids = getNLPbatchSlidingWindows(docids, COLLECTION_DICT)
+            num_sentences = len(ids)
             numIter = num_sentences // batchSize + 1
 
-
-            temp_docids = []
             temp_socres = torch.Tensor([0] * num_sentences)
+
             for iter in tqdm(range(numIter), desc="Process Document With Worker " + str(workerNum)):
                 start = iter * batchSize
                 end = (iter + 1) * batchSize
                 if end > num_sentences:
                     end = num_sentences
+                    print(qid, queryContents)
+                    print(end-start)
                     encoded_decoder_inputs = worker.tokenize([queryContents] * (end-start))
 
-
-                batchSentences = []
-                for docid, sentence in docid_sentence[start:end]:
-                    temp_docids.append(docid)
-                    batchSentences.append(sentence)
-
-                scores = worker.batchPredict(batchSentences, encoded_decoder_inputs, SCONF)
+                scores = worker.batchPredict(windows[start:end], encoded_decoder_inputs, SCONF)
                 temp_socres[start:end] = scores[:]
+
             temp_socres = temp_socres.tolist()
             with open("result/doc_rerank/t5/sentence_scoring/t5_doc_sentence_scoring.txt", "a+") as f:
-                for i in range(len(temp_docids)):
-                    f.write("{}\t{}\t{}\n".format(qid, temp_docids[i], temp_socres[i]))
+                for i in range(len(ids)):
+                    f.write("{}\t{}\t{}\n".format(qid, ids[i], temp_socres[i]))
 
             # fullSentenceList = list(chain.from_iterable(documentInSentences))
             # CHUNK_SIZE = SCONF["CHUNK_SIZE"]

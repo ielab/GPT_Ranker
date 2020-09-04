@@ -129,6 +129,9 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
             num_sentences = len(ids)
             numIter = num_sentences // batchSize + 1
 
+            if num_sentences % batchSize == 0:
+                numIter -= 1
+
             temp_socres = torch.Tensor([0] * num_sentences)
 
             for iter in tqdm(range(numIter), desc="Process Document With Worker " + str(workerNum)):
@@ -136,8 +139,6 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
                 end = (iter + 1) * batchSize
                 if end > num_sentences:
                     end = num_sentences
-                    print(qid, queryContents)
-                    print(end-start)
                     encoded_decoder_inputs = worker.tokenize([queryContents] * (end-start))
 
                 scores = worker.batchPredict(windows[start:end], encoded_decoder_inputs, SCONF)

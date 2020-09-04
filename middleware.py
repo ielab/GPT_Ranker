@@ -1,7 +1,10 @@
 from tqdm import tqdm
 from sentence_splitter import SentenceSplitter
+import spacy
+import re
 # from itertools import chain
-
+NLP = spacy.blank("en")
+NLP.add_pipe(NLP.create_pipe("sentencizer"))
 """
 THIS FILE MAINLY CONTAINS FUNCTIONS THAT COMMUNICATE BETWEEN MAIN AND RETRIEVER/WORKER
 """
@@ -27,6 +30,23 @@ def getBatchSplittedDocumentSentences(docids, COLLECTION_DICT):
         for sentence in sentences:
             result.append((docid, sentence))
     return result
+
+
+def getNLPbatchSlidingWindows(docids, COLLECTION_DICT):
+    result = []
+    for docid in docids:
+        doc_text = COLLECTION_DICT[docid]
+        doc = NLP(doc_text[:1000000])
+        sentences = [sent.string.strip() for sent in doc.sents]
+        for i in range(0, len(sentences), 5):
+            segment = ' '.join(sentences[i:i + 10])
+            segment = re.sub(r'^#*', '', segment)
+            segment += ' </s>'
+            result.append((docid, segment))
+            if i + 10 >= len(sentences):
+                break
+    return result
+
 
 
 def rerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUERY, topK, worker, workerNum):
@@ -102,7 +122,7 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
         else:
 
             docids = query[:temp, 1]
-            docid_sentence = getBatchSplittedDocumentSentences(docids, COLLECTION_DICT)
+            docid_sentence = getNLPbatchSlidingWindows(docids, COLLECTION_DICT)
             num_sentences = len(docid_sentence)
             numIter = num_sentences // batchSize + 1
 

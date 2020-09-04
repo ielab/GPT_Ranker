@@ -74,7 +74,7 @@ class T5:
         encoder_inputs = self.tokenizer(documents, padding=True, truncation=True, return_tensors="pt").to(
             DEVICE)
         # encoded_decoder_inputs = self.tokenizer(querys, padding=True, truncation=True, return_tensors="pt").to(DEVICE)
-        decoder_input_ids = decoder_inputs["input_ids"],
+        decoder_input_ids = decoder_inputs["input_ids"]
         # scores = []
         with torch.no_grad():
             outputs = self.model(input_ids=encoder_inputs["input_ids"],
@@ -83,12 +83,12 @@ class T5:
             batch_logits = outputs[1]  # shape(batch_size, decoder_dim, num_tokens)
             # batch_logits = batch_logits.cpu()
 
-            distributions = softmax(batch_logits)  # shape(batch_size, decoder_dim, num_tokens)
+            distributions = self.softmax(batch_logits)  # shape(batch_size, decoder_dim, num_tokens)
             decoder_input_ids = decoder_input_ids.unsqueeze(-1)  # shape(batch_size, decoder_dim, 1)
             batch_probs = torch.gather(distributions, 2, decoder_input_ids).squeeze(-1)  # shape(batch_size, decoder_dim)
             masked_log_probs = torch.log10(batch_probs)  # shape(batch_size, decoder_dim)
             scores = torch.sum(masked_log_probs, 1)  # shape(batch_size)
-
+            print(scores.get_device())
             # for logits in batch_logits:
             #     # distributions = softmax(logits.numpy(), axis=1)
             #     distributions = self.softmax(logits)

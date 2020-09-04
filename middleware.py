@@ -2,6 +2,7 @@ from tqdm import tqdm
 from sentence_splitter import SentenceSplitter
 import spacy
 import re
+import torch
 # from itertools import chain
 NLP = spacy.blank("en")
 NLP.add_pipe(NLP.create_pipe("sentencizer"))
@@ -83,7 +84,7 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
     for query in tqdm(RANKED_FILE_CONTENT, desc="Process Query With Worker " + str(workerNum)):
         qid = query[0][0]
         queryContents = QUERY[qid]
-        batchSize = 128
+        batchSize = 64
 
         encoded_decoder_inputs = worker.tokenize([queryContents] * batchSize)
 
@@ -128,7 +129,7 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
 
 
             temp_docids = []
-            temp_socres = []
+            temp_socres = torch.Tensor([0] * num_sentences)
             for iter in tqdm(range(numIter), desc="Process Document With Worker " + str(workerNum)):
                 start = iter * batchSize
                 end = (iter + 1) * batchSize
@@ -143,8 +144,8 @@ def batchRerankDocuments(RANKED_FILE_CONTENT, COLLECTION_DICT, CONF, SCONF, QUER
                     batchSentences.append(sentence)
 
                 scores = worker.batchPredict(batchSentences, encoded_decoder_inputs, SCONF)
-                temp_socres.extend(scores)
-
+                temp_socres[start:end] = scores[:]
+            temp_socres = temp_socres.tolist()
             with open("result/doc_rerank/t5/sentence_scoring/t5_doc_sentence_scoring.txt", "a+") as f:
                 for i in range(len(temp_docids)):
                     f.write("{}\t{}\t{}\n".format(qid, temp_docids[i], temp_socres[i]))

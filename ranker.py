@@ -88,7 +88,6 @@ class T5:
             batch_probs = torch.gather(distributions, 2, decoder_input_ids).squeeze(-1)  # shape(batch_size, decoder_dim)
             masked_log_probs = torch.log10(batch_probs)  # shape(batch_size, decoder_dim)
             scores = torch.sum(masked_log_probs, 1)  # shape(batch_size)
-            print(scores.get_device())
             # for logits in batch_logits:
             #     # distributions = softmax(logits.numpy(), axis=1)
             #     distributions = self.softmax(logits)
@@ -97,7 +96,7 @@ class T5:
             #         prob.append(distributions[index][val])
             #     score = numpy.sum(numpy.log10(prob))
             #     scores.append(score)
-        return scores.tolist()
+        return scores
 
 
 class GPT2:

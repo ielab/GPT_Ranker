@@ -3,7 +3,6 @@ import linecache
 from torch.utils.data import Dataset, DataLoader
 import torch
 from transformers import T5Tokenizer, T5Config, T5ForConditionalGeneration
-import numpy as np
 from tqdm import tqdm
 
 torch.manual_seed(0)
@@ -22,7 +21,7 @@ class msmarco_dataset(Dataset):
         line = linecache.getline(self._path, index+1)
         qid, docid, content = line.split("\t")
         query = self._query_dic[qid]
-        return query, content
+        return query, content + ' </s>'
 
     def __len__(self):
         return self._total_data
@@ -52,7 +51,7 @@ def main():
     model.to(DEVICE)
 
     # softmax function can be used to compute scores on GPU
-    softmax = torch.nn.Softmax(dim=1).to(DEVICE)
+    softmax = torch.nn.Softmax(dim=-1).to(DEVICE)
 
     # create torch DataLoader.
     dataset = msmarco_dataset(data_path,
@@ -70,22 +69,22 @@ def main():
         encoder_inputs = tokenizer(contents, padding=True, truncation=True, return_tensors="pt").to(
             DEVICE)
         decoder_inputs = tokenizer(querys, padding=True, truncation=True, return_tensors="pt").to(DEVICE)
-        decoder_input_ids = decoder_inputs["input_ids"]
+        decoder_input_ids = decoder_inputs["input_ids"]  # shape(batch_size, decoder_dim)
+        decoder_attention_mask = decoder_inputs["attention_mask"]  # shape(batch_size, decoder_dim)
+
         # inference logits
-        scores = []
         with torch.no_grad():
             outputs = model(input_ids=encoder_inputs["input_ids"],
-                            labels=decoder_inputs["input_ids"],
+                            labels=decoder_input_ids,
                             attention_mask=encoder_inputs["attention_mask"],
-                            decoder_attention_mask=decoder_inputs["attention_mask"])
-        batch_logits = outputs[1]
-        for logits in batch_logits:
-            distributions = softmax(logits)
-            prob = []
-            for index, val in enumerate(decoder_input_ids):
-                prob.append(distributions[index][val])
-            score = np.sum(np.log10(prob))
-            scores.append(score)
+                            decoder_attention_mask=decoder_attention_mask)
+
+            batch_logits = outputs[1]  # shape(batch_size, decoder_dim, num_tokens)
+            distributions = softmax(batch_logits)  # shape(batch_size, decoder_dim, num_tokens)
+            decoder_input_ids = decoder_input_ids.unsqueeze(-1)  # shape(batch_size, decoder_dim, 1)
+            batch_probs = torch.gather(distributions, 2, decoder_input_ids).squeeze(-1)  # shape(batch_size, decoder_dim)
+            masked_log_probs = torch.log10(batch_probs) * decoder_attention_mask  # shape(batch_size, decoder_dim)
+            socres = torch.sum(masked_log_probs, 1)  # shape(batch_size)
 
 
 if __name__ == '__main__':

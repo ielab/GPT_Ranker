@@ -53,8 +53,8 @@ __pycache__
 /data/doc_rerank/qrels/qrels.msmarco-doc.dev.txt
 /data/doc_rerank/query/doc-msmarco-dev-queries.json
 /data/doc_rerank/query/doc-msmarco-eval-query.json
-/data/doc_rerank/formatted_run.msmarco-doc.dev.bm25.tuned.txt
-/data/doc_rerank/formatted_run.msmarco-doc.eval.bm25.tuned.txt
+/data/doc_rerank/runs/direct_runs/dev/formatted_run.msmarco-doc.dev.bm25.tuned.txt
+/data/doc_rerank/runs/direct_runs/eval/formatted_run.msmarco-doc.eval.bm25.tuned.txt
 /data/pass_rerank/qrels/pass-qrels.msmarco-dev.txt
 /data/pass_rerank/qrels/pass-qrels.msmarco-dev.small.tsv
 /data/pass_rerank/query/pass-query-dev.json
@@ -73,8 +73,8 @@ __pycache__
 /result/pass_rerank/t5
 /data/pass_rerank/bm25_tuned_trec.eval
 /data/pass_rerank/bm25_tuned_trec.res
-data/doc_rerank/formatted_run.msmarco-doc.dev.bm25.tuned.trec.res
-data/doc_rerank/formatted_run.msmarco-doc.eval.bm25.trec.res
+data/doc_rerank/runs/direct_runs/dev/formatted_run.msmarco-doc.dev.bm25.tuned.trec.res
+data/doc_rerank/runs/direct_runs/eval/formatted_run.msmarco-doc.eval.bm25.tuned.trec.res
 data/pass_rerank/top1000.dev.trec.res
 data/pass_rerank/top1000.dev.res
 passTTTTTquery/appended_docs
@@ -110,3 +110,5 @@ data/doc_rerank/query/doc-msmarco-eval-queries.tsv
 data/doc_rerank/query/doc-msmarco-leaderboard-queries.tsv
 data/doc_rerank/query/doc-msmarco-eval-queries.json
 data/doc_rerank/query/doc-msmarco-leaderboard-queries.json
+data/doc_rerank/runs/
+data/pass_rerank/runs/

@@ -101,3 +101,12 @@ data/pass_rerank/run.msmarco-passage.dev.small-expanded.trec.res
 docTTTTTquery/formatted_segments/
 docTTTTTquery/splitted_docs/
 docTTTTTquery/msmarco-docs.tsv
+data/doc_rerank/collection_jsonl/no_t_s_with_trail_jsonl
+data/doc_rerank/collection_jsonl/t_s_with_trail_jsonl
+data/doc_rerank/collection_jsonl/original_jsonl
+data/doc_rerank/index
+data/doc_rerank/query/doc-msmarco-dev-queries.tsv
+data/doc_rerank/query/doc-msmarco-eval-queries.tsv
+data/doc_rerank/query/doc-msmarco-leaderboard-queries.tsv
+data/doc_rerank/query/doc-msmarco-eval-queries.json
+data/doc_rerank/query/doc-msmarco-leaderboard-queries.json

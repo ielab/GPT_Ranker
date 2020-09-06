@@ -51,23 +51,30 @@ def run_aggregation():
     f_content = load_file(args.input_path, args.input_format)
 
     if m == 'sum':
-        cut = 0
         for query, did in tqdm(f_content.items(), desc='Looping qids...'):
+            cut = 0
             if cutoff > len(did.items()) or cutoff == 0:
                 cutoff = len(did.items())
-            for docid, scores in tqdm(did.items(), desc='Looping dids...'):
-                result = [query, docid, sum(scores)]
-                results.append(result)
+            if cut < cutoff:
+                for docid, scores in tqdm(did.items(), desc='Looping dids...'):
+                    result = [query, docid, sum(scores)]
+                    results.append(result)
                 cut += 1
+            else:
+                break
     elif m == 'max':
-        cut = 0
         for query, did in tqdm(f_content.items(), desc='Looping qids...'):
+            cut = 0
             if cutoff > len(did.items()) or cutoff == 0:
                 cutoff = len(did.items())
-            for docid, scores in tqdm(did.items(), desc='Looping dids...'):
-                result = [query, docid, max(scores)]
-                results.append(result)
+            if cut < cutoff:
+                for docid, scores in tqdm(did.items(), desc='Looping dids...'):
+                    result = [query, docid, max(scores)]
+                    results.append(result)
                 cut += 1
+            else:
+                break
+    # TODO: Add occurrence aggregation method
     elif m == 'occurrence':
         for query, did in tqdm(f_content.items(), desc='Looping qids...'):
             for docid, scores in tqdm(did.items(), desc='Looping dids...'):

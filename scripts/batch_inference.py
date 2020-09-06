@@ -4,59 +4,78 @@ import torch
 from transformers import T5Tokenizer, T5Config, T5ForConditionalGeneration
 import json
 from tqdm import tqdm
-import numpy as np
+import os
 
 torch.manual_seed(0)
 DEVICE = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-
-
-
-class msmarco_dataset(Dataset):
-    def __init__(self, path, query_path):
-        self._path = path
-        with open(self._path, "r") as f:
-            self._total_data = len(f.readlines())
-
-        self._query_dic = readQueryFile(query_path)
-
-
-    def __getitem__(self, index):
-        line = linecache.getline(self._path, index+1)
-        qid, docid, content = line.rstrip().split("\t")
-        query = self._query_dic[qid]
-        return query, content + ' </s>'
-
-    def __len__(self):
-        return self._total_data
-
-
-def collate_fn(batch):
-    querys = []
-    contents = []
-    for query, content in batch:
-        querys.append(query)
-        contents.append(content)
-
-    return querys, contents
+tokenizer = T5Tokenizer.from_pretrained('t5-base')
 
 
 def readQueryFile(path):
     # Read the query file into memory and construct a dictionary
-    queryCollection = []
     queryDict = {}
     queryFilePath = path
 
     with open(queryFilePath, 'r') as f:
         contents = f.readlines()
 
-    for line in contents:
-        queryContent = json.loads(line)
-        queryCollection.append(queryContent)
-
-    for query in queryCollection:
+    for line in tqdm(contents, desc='Loading Queries...'):
+        query = json.loads(line)
         queryDict[query["id"]] = query["contents"]
 
     return queryDict
+
+
+def readDocumentFile(path):
+    docDict = {}
+    docFilePaths = os.listdir(path)
+
+    for path in tqdm(docFilePaths, desc='Loading Documents...'):
+
+        with open(path, 'r') as f:
+            contents = f.readlines()
+
+        for line in contents:
+            document = json.loads(line)
+            docDict[document["id"]] = document["contents"]
+
+    return docDict
+
+
+class msmarco_dataset(Dataset):
+    def __init__(self, res_path, query_path, doc_path):
+        self._res_path = res_path
+        with open(self._res_path, "r") as f:
+            self._total_data = len(f.readlines())
+
+        self._query_dic = readQueryFile(query_path)
+        self._doc_dic = readDocumentFile(doc_path)
+
+
+    def __getitem__(self, index):
+        line = linecache.getline(self._res_path, index+1)
+        qid, docid, _ = line.rstrip().split("\t")
+        query = self._query_dic[qid]
+        content = self._doc_dic[docid] + ' </s>'
+
+        return query, content
+
+    def __len__(self):
+        return self._total_data
+
+
+def collate_fn(batch):
+
+    querys = []
+    contents = []
+    for query, content in batch:
+        querys.append(query)
+        contents.append(content)
+
+    encoder_inputs = tokenizer(contents, padding=True, truncation=True, return_tensors="pt").to(DEVICE)
+    decoder_inputs = tokenizer(querys, padding=True, truncation=True, return_tensors="pt").to(DEVICE)
+
+    return encoder_inputs, decoder_inputs
 
 
 def main():
@@ -66,7 +85,6 @@ def main():
 
     # Loading model and put it in GPU
     print("Loading model......")
-    tokenizer = T5Tokenizer.from_pretrained('t5-base')
     config = T5Config.from_pretrained('t5-base')
     model = T5ForConditionalGeneration.from_pretrained(
         model_dir, from_tf=True, config=config)
@@ -81,18 +99,14 @@ def main():
     dataset = msmarco_dataset(data_path,
                                  query_path)
     loader = DataLoader(dataset,
-                        batch_size=4,
+                        batch_size=32,
                         shuffle=False,
                         collate_fn=collate_fn,
                         pin_memory=True)
 
     # for each batch
-    for querys, contents in tqdm(loader):
+    for encoder_inputs, decoder_inputs in tqdm(loader):
 
-        # batch encoding
-        encoder_inputs = tokenizer(contents, padding=True, truncation=True, return_tensors="pt").to(
-            DEVICE)
-        decoder_inputs = tokenizer(querys, padding=True, truncation=True, return_tensors="pt").to(DEVICE)
         decoder_input_ids = decoder_inputs["input_ids"]  # shape(batch_size, decoder_dim)
         decoder_attention_mask = decoder_inputs["attention_mask"]  # shape(batch_size, decoder_dim)
 
@@ -100,15 +114,16 @@ def main():
         with torch.no_grad():
             outputs = model(input_ids=encoder_inputs["input_ids"],
                             labels=decoder_input_ids,
-                            attention_mask=encoder_inputs["attention_mask"])
+                            attention_mask=encoder_inputs["attention_mask"],
+                            decoder_attention_mask=decoder_attention_mask)
             decoder_input_ids = decoder_input_ids[0]
             batch_logits = outputs[1]  # shape(batch_size, decoder_dim, num_tokens)
             distributions = softmax(batch_logits)  # shape(batch_size, decoder_dim, num_tokens)
             decoder_input_ids = decoder_input_ids.unsqueeze(-1)  # shape(batch_size, decoder_dim, 1)
             batch_probs = torch.gather(distributions, 2, decoder_input_ids).squeeze(-1)  # shape(batch_size, decoder_dim)
-            # masked_log_probs = torch.log10(batch_probs) * decoder_attention_mask  # shape(batch_size, decoder_dim)
-            socres = torch.sum(torch.log10(batch_probs), 1)  # shape(batch_size)
-            print(socres.tolist())
+            masked_log_probs = torch.log10(batch_probs) * decoder_attention_mask  # shape(batch_size, decoder_dim)
+            socres = torch.sum(masked_log_probs, 1)  # shape(batch_size)
+            print(socres.shape)
 
             # scores = []
             # for logits in batch_logits:

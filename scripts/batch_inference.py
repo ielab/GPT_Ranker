@@ -30,9 +30,9 @@ def readDocumentFile(path):
     docDict = {}
     docFilePaths = os.listdir(path)
 
-    for path in tqdm(docFilePaths, desc='Loading Documents...'):
+    for docFile in tqdm(docFilePaths, desc='Loading Documents...'):
 
-        with open(path, 'r') as f:
+        with open(path+'/'+docFile, 'r') as f:
             contents = f.readlines()
 
         for line in contents:
@@ -47,6 +47,7 @@ class msmarco_dataset(Dataset):
         self._res_path = res_path
         with open(self._res_path, "r") as f:
             self._total_data = len(f.readlines())
+        print("total number of passages need to be rerank:",self._total_data)
 
         self._query_dic = readQueryFile(query_path)
         self._doc_dic = readDocumentFile(doc_path)
@@ -54,7 +55,7 @@ class msmarco_dataset(Dataset):
 
     def __getitem__(self, index):
         line = linecache.getline(self._res_path, index+1)
-        qid, docid, _ = line.rstrip().split("\t")
+        qid, docid, _, _ = line.rstrip().split("\t")
         query = self._query_dic[qid]
         content = self._doc_dic[docid] + ' </s>'
 
@@ -79,7 +80,8 @@ def collate_fn(batch):
 
 
 def main():
-    data_path = "no_title_sliding_window_segment_ids_texts-1.txt"
+    res_path = "/media/bigdata/uqhli31/GPT_Ranker/sliding_window_runs/no_title_sliding_windows/dev/doc-tuned/formatted_run.msmarco-doc.dev.bm25.doc-tuned.no-title.sliding-window-top2000.txt"
+    doc_path = "../data/doc_rerank/collection_jsonl/"
     query_path = "../data/doc_rerank/query/doc-msmarco-dev-queries.json"
     model_dir = "../model/t5-base/model.ckpt-1004000"
 
@@ -96,17 +98,18 @@ def main():
 
     # create torch DataLoader.
     print("Creating DataLoader......")
-    dataset = msmarco_dataset(data_path,
-                                 query_path)
+    dataset = msmarco_dataset(res_path, query_path, doc_path)
     loader = DataLoader(dataset,
                         batch_size=32,
                         shuffle=False,
-                        collate_fn=collate_fn,
-                        pin_memory=True)
+                        collate_fn=collate_fn,)
 
+    sf = open("t5_scores.txt", 'a+')
+    batch_num = 0
+    temp_scores = []
     # for each batch
     for encoder_inputs, decoder_inputs in tqdm(loader):
-
+        batch_num += 1
         decoder_input_ids = decoder_inputs["input_ids"]  # shape(batch_size, decoder_dim)
         decoder_attention_mask = decoder_inputs["attention_mask"]  # shape(batch_size, decoder_dim)
 
@@ -116,14 +119,21 @@ def main():
                             labels=decoder_input_ids,
                             attention_mask=encoder_inputs["attention_mask"],
                             decoder_attention_mask=decoder_attention_mask)
-            decoder_input_ids = decoder_input_ids[0]
             batch_logits = outputs[1]  # shape(batch_size, decoder_dim, num_tokens)
             distributions = softmax(batch_logits)  # shape(batch_size, decoder_dim, num_tokens)
             decoder_input_ids = decoder_input_ids.unsqueeze(-1)  # shape(batch_size, decoder_dim, 1)
             batch_probs = torch.gather(distributions, 2, decoder_input_ids).squeeze(-1)  # shape(batch_size, decoder_dim)
             masked_log_probs = torch.log10(batch_probs) * decoder_attention_mask  # shape(batch_size, decoder_dim)
             socres = torch.sum(masked_log_probs, 1)  # shape(batch_size)
-            print(socres.shape)
+
+        temp_scores.extend(socres.tolist())
+        if batch_num % 100 == 0:
+            for score in temp_scores:
+                sf.write(str(score)+'\n')
+                temp_scores = []
+    
+    for score in temp_scores:
+        sf.write(score+'\n')
 
             # scores = []
             # for logits in batch_logits:
@@ -135,6 +145,6 @@ def main():
             #     score = np.sum(np.log10(prob))
             #     scores.append(score)
             #
-
+    sf.close()
 if __name__ == '__main__':
     main()

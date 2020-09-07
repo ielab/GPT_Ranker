@@ -79,6 +79,18 @@ def run_aggregation():
         for query, did in tqdm(f_content.items(), desc='Looping qids...'):
             for docid, scores in tqdm(did.items(), desc='Looping dids...'):
                 pass
+    elif m == 'average':
+        for query, did in tqdm(f_content.items(), desc='Looping qids...'):
+            cut = 0
+            if cutoff > len(did.items()) or cutoff == 0:
+                cutoff = len(did.items())
+            if cut < cutoff:
+                for docid, scores in tqdm(did.items(), desc='Looping dids...'):
+                    result = [query, docid, sum(scores)/len(scores)]
+                    results.append(result)
+                cut += 1
+            else:
+                break
     return sorted(results, key=lambda i: i[2], reverse=True)
 
 

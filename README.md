@@ -40,7 +40,7 @@ This Repo Is For MSMARCO Document/Passage Reranking Task Using GPT-2/T5 Model
 ## To Clone this repo
 
 ```
-git clone --recursive-submodules git@github.com:ielab/GPT_Ranker.git
+git clone --recurse-submodules git@github.com:ielab/GPT_Ranker.git
 ```
 
 - - -

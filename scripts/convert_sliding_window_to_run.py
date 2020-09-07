@@ -74,11 +74,18 @@ def run_aggregation():
                 cut += 1
             else:
                 break
-    # TODO: Add occurrence aggregation method
     elif m == 'occurrence':
         for query, did in tqdm(f_content.items(), desc='Looping qids...'):
-            for docid, scores in tqdm(did.items(), desc='Looping dids...'):
-                pass
+            cut = 0
+            if cutoff > len(did.items()) or cutoff == 0:
+                cutoff = len(did.items())
+            if cut < cutoff:
+                for docid, scores in tqdm(did.items(), desc='Looping dids...'):
+                    result = [query, docid, len(scores)]
+                    results.append(result)
+                cut += 1
+            else:
+                break
     elif m == 'average':
         for query, did in tqdm(f_content.items(), desc='Looping qids...'):
             cut = 0

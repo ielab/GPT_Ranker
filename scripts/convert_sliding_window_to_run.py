@@ -5,32 +5,21 @@ from tqdm import tqdm
 def load_file(path, form):
     print('Loading Input File...')
     file_content = {}
-    if form == 'trec':
-        for line in tqdm(open(path), desc='Reading...'):
+    for line in tqdm(open(path), desc='Reading...'):
+        if form == 'trec':
             qid, _, wid, _, score, _ = line.split(' ')
-            did = wid.split('_')[0]
-            if qid not in file_content:
-                file_content[qid] = {
-                    did: [float(score)]
-                }
+        else:
+            qid, wid, _, score = line.split('\t')
+        did = wid.split('_')[0]
+        if qid not in file_content:
+            file_content[qid] = {
+                did: [float(score)]
+            }
+        else:
+            if did not in file_content[qid]:
+                file_content[qid][did] = [float(score)]
             else:
-                if did not in file_content[qid]:
-                    file_content[qid][did] = [float(score)]
-                else:
-                    file_content[qid][did].append(float(score))
-    else:
-        for line in tqdm(open(path), desc='Reading...'):
-            qid, wid, rank, score = line.split('\t')
-            did = wid.split('_')[0]
-            if qid not in file_content:
-                file_content[qid] = {
-                    did: [float(score)]
-                }
-            else:
-                if did not in file_content[qid]:
-                    file_content[qid][did] = [float(score)]
-                else:
-                    file_content[qid][did].append(float(score))
+                file_content[qid][did].append(float(score))
     return file_content
 
 

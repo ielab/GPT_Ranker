@@ -133,7 +133,7 @@ def main():
                 temp_scores = []
     
     for score in temp_scores:
-        sf.write(score+'\n')
+        sf.write(str(score)+'\n')
 
             # scores = []
             # for logits in batch_logits:

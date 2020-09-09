@@ -45,8 +45,7 @@ def load_reference(path_to_reference):
 def validate_candidate_has_enough_ranking(qid_to_ranked_candidate_documents):
     for qid in qid_to_ranked_candidate_documents:
         if len(qid_to_ranked_candidate_documents[qid]) > MaxMRRRank:
-            pass
-            # print('Too many documents ranked. Please Provide top 100 documents for qid:{}'.format(qid))
+            print('Too many documents ranked. Please Provide top 100 documents for qid:{}'.format(qid))
 
 def load_candidate_from_stream(f):
     """Load candidate data from a stream.

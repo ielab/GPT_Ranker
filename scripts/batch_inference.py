@@ -107,6 +107,7 @@ def main():
     sf = open("t5_scores.txt", 'a+')
     batch_num = 0
     temp_scores = []
+
     # for each batch
     for encoder_inputs, decoder_inputs in tqdm(loader):
         batch_num += 1
@@ -131,20 +132,13 @@ def main():
             for score in temp_scores:
                 sf.write(str(score)+'\n')
                 temp_scores = []
-    
+
+    # write for the last chunk of scores
     for score in temp_scores:
         sf.write(str(score)+'\n')
 
-            # scores = []
-            # for logits in batch_logits:
-            #     # distributions = softmax(logits.numpy(), axis=1)
-            #     distributions = softmax(logits)
-            #     prob = []
-            #     for index, val in enumerate(decoder_input_ids):
-            #         prob.append(distributions[index][val])
-            #     score = np.sum(np.log10(prob))
-            #     scores.append(score)
-            #
     sf.close()
+
+
 if __name__ == '__main__':
     main()

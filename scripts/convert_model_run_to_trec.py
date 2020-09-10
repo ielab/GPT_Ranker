@@ -18,6 +18,8 @@ out_path = args.output_path
 with open(bm25_run_path, "r") as bm25_file, open(model_run_path, "r") as model_run_file, open(out_path, "a+") as out_file:
     bm25_lines = bm25_file.readlines()
     model_lines = model_run_file.readlines()
+    if len(bm25_lines) != len(model_lines):
+        print("Warning: number of lines is different!!!!")
     for ind, line in enumerate(tqdm(model_lines)):
         if bm25_format == 'trec':
             qid, _, wid, _, _, _ = bm25_lines[ind].rstrip().split(" ")

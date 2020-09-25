@@ -25,7 +25,7 @@ def run():
         res = searcher.search(q_content, k=1000)
         with open('/Volumes/IELab/ielab/GPT_Ranker/traditional/runs/pass_dev_qlm.small.res', "a+") as f:
             for i in range(len(res)):
-                f.write(f'{qid} Q0 {res[i].docid:15} {i + 1} {res[i].score:.5f} qlm')
+                f.write(f'{qid} Q0 {res[i].docid:15} {i + 1} {res[i].score:.5f} qlm\n')
     f.close()
 
 

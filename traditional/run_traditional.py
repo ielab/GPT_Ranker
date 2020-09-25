@@ -14,8 +14,8 @@ def readFile(path: str):
 
 
 def run():
-    query = readFile('/Volumes/IELab/ielab/GPT_Ranker/data/pass_rerank/query/pass-query-dev.small.json')
-    searcher = SimpleSearcher('/Volumes/IELab/ielab/GPT_Ranker/data/pass_rerank/index/lucene-index-msmarco')
+    query = readFile('/Volumes/IELab/ielab/GPT_Ranker/data/doc_rerank/query/doc-msmarco-dev-queries.json')
+    searcher = SimpleSearcher('/Volumes/IELab/ielab/GPT_Ranker/data/doc_rerank/index/lucene-index.msmarco-doc.pos+docvectors+rawdocs')
     searcher.unset_rm3()
     searcher.set_qld(2500)
 
@@ -23,7 +23,7 @@ def run():
         qid = q['id']
         q_content = q['contents']
         res = searcher.search(q_content, k=1000)
-        with open('/Volumes/IELab/ielab/GPT_Ranker/traditional/runs/pass_dev_qlm.small.res', "a+") as f:
+        with open('/Volumes/IELab/ielab/GPT_Ranker/traditional/runs/doc_dev_qlm.res', "a+") as f:
             for i in range(len(res)):
                 f.write(f'{qid} Q0 {res[i].docid:15} {i + 1} {res[i].score:.5f} qlm\n')
     f.close()

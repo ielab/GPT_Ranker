@@ -1,5 +1,6 @@
 from pyserini.search import SimpleSearcher
 import json
+from tqdm import tqdm
 
 
 def readFile(path: str):
@@ -18,7 +19,7 @@ def run():
     searcher.unset_rm3()
     searcher.set_qld(2500)
 
-    for q in query:
+    for q in tqdm(query):
         qid = q['id']
         q_content = q['contents']
         res = searcher.search(q_content, k=1000)

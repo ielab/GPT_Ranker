@@ -1,29 +1,31 @@
 from pyserini.search import SimpleSearcher
+import json
 
 
 def readFile(path: str):
     with open(path, "r") as f:
         lines = f.readlines()
-        init_qid = lines[0].split('\t')[0]
-        ranked_list = {}
+        res = []
         for line in lines:
-            qid, docid, _ = line.split('\t')
-            if qid != init_qid:
-                ranked_list[qid] = [docid]
-                continue
-            else:
-                ranked_list[qid].append(docid)
-                continue
+            json_line = json.loads(line)
+            res.append(json_line)
+    return res
 
 
 def run():
+    query = readFile('/Volumes/IELab/ielab/GPT_Ranker/data/pass_rerank/query/pass-query-dev.small.json')
     searcher = SimpleSearcher('/Volumes/IELab/ielab/GPT_Ranker/data/pass_rerank/index/lucene-index-msmarco')
+    searcher.unset_rm3()
     searcher.set_qld(2500)
 
-    res = searcher.search('brother', k=1000)
-
-    for i in range(10):
-        print(f'{res[i].docid:15} {res[i].score:.5f}')
+    for q in query:
+        qid = q['id']
+        q_content = q['contents']
+        res = searcher.search(q_content, k=1000)
+        with open('/Volumes/IELab/ielab/GPT_Ranker/traditional/runs/pass_dev_qlm.small.res', "a+") as f:
+            for i in range(len(res)):
+                f.write(f'{qid} Q0 {res[i].docid:15} {i + 1} {res[i].score:.5f} qlm')
+    f.close()
 
 
 if __name__ == '__main__':

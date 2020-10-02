@@ -1,5 +1,4 @@
 from tqdm import tqdm
-import requests
 
 
 with open("runs/msmarco_pass_qld.dev.small.txt", "r") as qldin, open("runs/msmarco_pass_qljm.dev.small.txt", "r") as qljmin, open("msmarco_pass_qld_rerank.dev.small.txt", "a+") as qldrerank, open("msmarco_pass_qljm_rerank.dev.small.txt", "a+") as qljmrerank, open("/Volumes/IELab/ielab/GPT_Ranker/data/pass_rerank/runs/dev/run.msmarco-passage.dev.small.tsv", "r") as bm25:
@@ -70,22 +69,22 @@ with open("runs/msmarco_pass_qld.dev.small.txt", "r") as qldin, open("runs/msmar
 
     for each in tqdm(ranked_qld, desc='Write QLD'):
         if each[0] == currentqldqid:
-            qldrerank.write('{} Q0 {} {} {}\n'.format(each[0], each[1], qldrank, each[2], 'qld_rerank'))
+            qldrerank.write('{} Q0 {} {} {} {}\n'.format(each[0], each[1], qldrank, each[2], 'qld_rerank'))
             qldrank += 1
         else:
             qldrank = 1
             currentqldqid = each[0]
-            qldrerank.write('{} Q0 {} {} {}\n'.format(each[0], each[1], qldrank, each[2], 'qld_rerank'))
+            qldrerank.write('{} Q0 {} {} {} {}\n'.format(each[0], each[1], qldrank, each[2], 'qld_rerank'))
             qldrank += 1
 
     for item in tqdm(ranked_qljm, desc='Write QLJM'):
         if item[0] == currentqljmqid:
-            qljmrerank.write('{} Q0 {} {} {}\n'.format(item[0], item[1], qljmrank, item[2], 'qljm_rerank'))
+            qljmrerank.write('{} Q0 {} {} {} {}\n'.format(item[0], item[1], qljmrank, item[2], 'qljm_rerank'))
             qljmrank += 1
         else:
             qljmrank = 1
             currentqljmqid = item[0]
-            qljmrerank.write('{} Q0 {} {} {}\n'.format(item[0], item[1], qljmrank, item[2], 'qljm_rerank'))
+            qljmrerank.write('{} Q0 {} {} {} {}\n'.format(item[0], item[1], qljmrank, item[2], 'qljm_rerank'))
             qljmrank += 1
 
 qldin.close()

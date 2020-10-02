@@ -2,15 +2,6 @@ from tqdm import tqdm
 import requests
 
 
-def notification(name, server, key):
-    pattern = "Task Name: {}\nServer Name: {}\nFinished, Please Check On Server."
-    report = {
-        'value1': pattern.format(name, server)
-    }
-    requests.post('https://maker.ifttt.com/trigger/progress_report/with/key/{}'.format(key),
-                  data=report)
-
-
 with open("runs/msmarco_pass_qld.dev.small.txt", "r") as qldin, open("runs/msmarco_pass_qljm.dev.small.txt", "r") as qljmin, open("msmarco_pass_qld_rerank.dev.small.txt", "a+") as qldrerank, open("msmarco_pass_qljm_rerank.dev.small.txt", "a+") as qljmrerank, open("/Volumes/IELab/ielab/GPT_Ranker/data/pass_rerank/runs/dev/run.msmarco-passage.dev.small.tsv", "r") as bm25:
     qldlines = qldin.readlines()
     qljmlines = qljmin.readlines()
@@ -45,7 +36,7 @@ with open("runs/msmarco_pass_qld.dev.small.txt", "r") as qldin, open("runs/msmar
 
     for bm25line in tqdm(bm25lines, desc='Create BM25 Dict'):
         bm25line_parts = bm25line.strip().split('\t')
-        bm25Dict[bm25line_parts[0]][bm25line_parts[2]] = 0
+        bm25Dict[bm25line_parts[0]][bm25line_parts[1]] = 0
 
     bm25qids = bm25Dict.keys()
 
@@ -96,8 +87,6 @@ with open("runs/msmarco_pass_qld.dev.small.txt", "r") as qldin, open("runs/msmar
             currentqljmqid = item[0]
             qljmrerank.write('{} Q0 {} {} {}\n'.format(item[0], item[1], qljmrank, item[2], 'qljm_rerank'))
             qljmrank += 1
-
-notification("T5QLM Traditional", "Mini", "bVpFVIBweSh1jrHv9pb4SA")
 
 qldin.close()
 qljmin.close()

@@ -208,13 +208,15 @@ GPT_Ranker/
 |    |    +--- gpt2/
 |    |    +--- t5/
 +--- notes/
++--- scripts/
+|    +--- fine_tuning.py
+|    +--- passage_msmarco_eval.py
+|    +--- doc_msmarco_eval.py
+|    +--- SOME OTHER SCRIPTS
 +--- config.json
-+--- fine_tuning.py
 +--- helper.py
 +--- main.py
 +--- middleware.py
-+--- passage_msmarco_eval.py
-+--- doc_msmarco_eval.py
 +--- ranker.py
 +--- anserini_retriever.py
 +--- README.md

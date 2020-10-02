@@ -4,3 +4,5 @@ __pycache__
 /venv
 /.vscode
 /analysis
+traditional/rerank/msmarco_pass_qld_rerank.dev.small.txt
+traditional/rerank/msmarco_pass_qljm_rerank.dev.small.txt
